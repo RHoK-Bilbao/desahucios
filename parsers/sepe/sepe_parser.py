@@ -2,26 +2,36 @@
 # -*-*- encoding: utf-8 -*-*-
 
 import os
+import math
 import datetime
 import urllib2
 
-# pip install xlrd
-import xlrd
+import warnings
+warnings.filterwarnings(action='ignore', module='xlrd1')
 
+# pip install xlrd1
+import xlrd1
+
+warnings.filterwarnings(action='ignore', module='xlrd1')
+
+def clean_data(data):
+    if isinstance(data, basestring) and 'blico' in data:
+        return 0
+    return math.floor(float(str(data).strip() or '0'))
 
 class RowRegistry(object):
 
     def __init__(self, data):
 
-        self.total            = data['total'] or 0
+        self.total            = clean_data(data['total'])
 
-        self.men_less_25      = data['men']['<25'] or 0
-        self.men_less_45      = data['men']['25<45'] or 0
-        self.men_older        = data['men']['>44'] or 0
+        self.men_less_25      = clean_data(data['men']['<25'])
+        self.men_less_45      = clean_data(data['men']['25<45'])
+        self.men_older        = clean_data(data['men']['>44'])
 
-        self.women_less_25    = data['women']['<25'] or 0
-        self.women_less_45    = data['women']['25<45'] or 0
-        self.women_older      = data['women']['>44'] or 0
+        self.women_less_25    = clean_data(data['women']['<25'])
+        self.women_less_45    = clean_data(data['women']['25<45'])
+        self.women_older      = clean_data(data['women']['>44'])
 
         self.men              = self.men_less_25   + self.men_less_45   + self.men_older
         self.women            = self.women_less_25 + self.women_less_45 + self.women_older
@@ -30,11 +40,11 @@ class RowRegistry(object):
         self.less_45          = self.men_less_25 + self.women_less_45
         self.older            = self.men_older   + self.women_older
 
-        self.agriculture      = data['agriculture'] or 0
-        self.services         = data['services'] or 0
-        self.industry         = data['industry'] or 0
-        self.real_estate      = data['real_estate'] or 0
-        self.first_employment = data['first_employment'] or 0
+        self.agriculture      = clean_data(data['agriculture'])
+        self.services         = clean_data(data['services'])
+        self.industry         = clean_data(data['industry'])
+        self.real_estate      = clean_data(data['real_estate'])
+        self.first_employment = clean_data(data['first_employment'])
 
 
 class UnemploymentExcelParser(object):
@@ -47,7 +57,7 @@ class UnemploymentExcelParser(object):
 
         print fname
 
-        workbook = xlrd.open_workbook(fname)
+        workbook = xlrd1.open_workbook(fname)
         if 'PARO' in workbook.sheet_names():
             sheet_name = 'PARO'
         else:
@@ -70,7 +80,7 @@ class UnemploymentExcelParser(object):
     def search_last_town(self):
         # Towns are in col = 1 (second column)
         for row in xrange(self.search_first_town(), self.worksheet.nrows):
-            town_name = self.worksheet.cell_value(row, 2)
+            town_name = self.worksheet.cell_value(row, 1)
             if town_name == '':
                 return row - 1
 
@@ -99,8 +109,6 @@ class UnemploymentExcelParser(object):
     def retrieve_data(self):
         initial_row = self.search_first_town()
         last_row    = self.search_last_town()
-
-        print last_row, initial_row
         
         for row_pos in range(initial_row, last_row):
             name = self.worksheet.cell_value(row_pos, 1)
@@ -143,8 +151,8 @@ def iterate_available_data():
     """ returns (year, month, province) for each available data """
     today = datetime.datetime.today()
 
-    for month in range(1, 13):
-        for year in range(2005, today.year + 1):
+    for year in range(2005, today.year + 1):
+        for month in range(1, 13):
             if year == 2005 and month < 5:
                 continue
 
@@ -222,6 +230,7 @@ if __name__ == '__main__':
         except Exception as e:
             print "Error: %s" % e
 
-    # parser = UnemploymentExcelParser(DIRECTORY, 2006, 1, 'ALBACETE')
-    # parser.retrieve_data()
+    # parser = UnemploymentExcelParser(DIRECTORY, 2012, 10, 'CACERES')
+    # print parser.total.total
+    # print sorted(parser.towns.keys())
 
