@@ -165,3 +165,8 @@ LOGGING = {
         },
     }
 }
+
+DESAHUCIOS_USER     = 'rhok'
+DESAHUCIOS_PASSWORD = 'rhok'
+DESAHUCIOS_HOST     = '127.0.0.1'
+
