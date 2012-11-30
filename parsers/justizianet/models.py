@@ -27,6 +27,7 @@ class Desahucio(Base):
 	procedimiento_judicial = Column(Unicode(200))
 	direccion = Column(Unicode(200))
 	nig = Column(Unicode(200))
+	municipio_id = Column(Integer, ForeignKey('Municipios.id'), nullable = False)
 	
 	def __init__(self, fecha, url, valoracion, cancelado, deposito, resumen, procedimiento_judicial, direccion, nig):
 		self.fecha = fecha
@@ -45,11 +46,14 @@ class PartidoJudicial(Base):
 	nombre = Column(Unicode(50))
 	organo_judicial = Column(Unicode(200))
 	telefono = Column(Unicode(15))
+	municipio_id = Column(Integer, ForeignKey('Municipios.id'), nullable = False)
 
+class Municipio(Base):
+	__tablename__ = 'Municipios'
+	id = Column(Integer, primary_key = True)
+	nombre = Column(Unicode(100))
 
-	street = Column(Unicode(50), nullable = False)
-	user_id = Column(Integer, ForeignKey('Users.id'), nullable = False)
-	user = relation(User.__name__, backref = backref('addresses', order_by = id, cascade = 'all,delete'))
+	partidojudicial_id = Column(Integer, ForeignKey('PartidosJudiciales.id'), nullable = True)
 
 	def __init__(self, street, user):
 		self.street = street

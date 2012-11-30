@@ -138,9 +138,6 @@ def scrappList():
             page += PAGINATION
 
 def scrappEviction(cpartido, location, url, title, cancelled):
-    # print cpartidos[cpartido]
-    # print location
-    # print url
     evicdict = {}
 
     evhtml = connection(url)
