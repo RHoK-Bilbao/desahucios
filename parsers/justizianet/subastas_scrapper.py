@@ -17,20 +17,20 @@ PAGINATION = 10
 startdate = datetime(2012, 05, 01)
 enddate = datetime.now()
 cpartidos = {
-    '0101': 'Amurrio',
-    '2002': 'Azpeitia',
-    '4805': 'Balmaseda',
-    '4802': 'Barakaldo',
-    '2003': 'Bergara',
-    '4804': 'Bilbao',
-    '2005': 'Donostia-San Sebastián',
-    '4801': 'Durango',
-    '2004': 'Eibar',
-    '4803': 'Gernika-Lumo',
-    '4806': 'Getxo',
-    '2006': 'Irún',
-    '2001': 'Tolosa',
-    '0102': 'Vitoria-Gasteiz'
+    '0101': 'AMURRIO',
+    '2002': 'AZPEITIA',
+    '4805': 'BALMASEDA',
+    '4802': 'BARAKALDO',
+    '2003': 'BERGARA',
+    '4804': 'BILBAO',
+    '2005': 'DONOSTIA-SAN SEBASTIAN',
+    '4801': 'DURANGO',
+    '2004': 'EIBAR',
+    '4803': 'GERNIKA-LUMO',
+    '4806': 'GETXO',
+    '2006': 'IRUN',
+    '2001': 'TOLOSA',
+    '0102': 'VITORIA-GASTEIZ'
 }
 
 #wordcounter = {}
@@ -176,6 +176,7 @@ def scrappEviction(cpartido, url, title, cancelled):
 	    evicdict['Localidad'] = evicdict['Partido Judicial']
 
     if 'hipotecari' in evicdict['Procedimiento judicial']:
+        # Meter en BD
         for a, b in evicdict.items():
             print a
             print b
