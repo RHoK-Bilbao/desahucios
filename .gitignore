@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-*.pyc
-=======
 *.py[cod]
 
 # C extensions
@@ -39,4 +36,3 @@ nosetests.xml
 
 # Logging
 *.log
->>>>>>> 6a4a385e0ee05d07ed91be0a11bffabf6792abac
