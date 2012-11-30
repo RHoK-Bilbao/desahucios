@@ -170,7 +170,7 @@ def scrappEviction(cpartido, location, url, title, cancelled):
     evicdict['Cancelado'] = cancelled
 
     for municipio in municipios:
-        if municipio in title:
+        if municipio.lower() in title.lower():
             evicdict['Municipio'] = municipio
             break
 
@@ -197,3 +197,4 @@ import operator
 sorted_wordlist = sorted(wordcounter.iteritems(), key=operator.itemgetter(1))
 for word in sorted_wordlist:
     print word'''
+
