@@ -12,3 +12,6 @@ def line_chart(request):
 
 def other_chart(request):
 	return render_to_response('website/other_chart.html', {}, context_instance = RequestContext(request))
+
+def focus_context(request):
+	return render_to_response('website/focus_context.html', {}, context_instance = RequestContext(request))
