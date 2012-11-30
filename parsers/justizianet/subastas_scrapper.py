@@ -51,6 +51,59 @@ importantworddict = [
 'apartamento',
 ]
 
+municipios = [
+    'San Millán', 'Valdegovía', 'Kuartango', 'Labastida',
+    'Valle de Arana', 'Laguardia', 'Oyón-Oion', 'Baños de Ebro/Mañueta',
+    'Elburgo', 'Añana', 'Legutiano', 'Zigoitia', 'Aramaio',
+    'Arrazua-Ubarrundia', 'Llodio', 'Peñacerrada-Urizaharra',
+    'Asparrena', 'Bernedo', 'Kripan', 'Moreda de Álava', 'Samaniego',
+    'Leza', 'Arraia-Maeztu', 'Elciego', 'Elvillar', 'Armiñón', 'Lantarón',
+    'Vitoria-Gasteiz', 'Villabuena de Álava', 'Ribera Baja',
+    'Iruña de Oca', 'Zalduondo', 'Ribera Alta', 'Zambrana', 'Zuia',
+    'Navaridas', 'Artziniega', 'Barrundia', 'Lanciego', 'Okondo',
+    'Yécora', 'Amurrio', 'Berantevilla', 'Iruraiz-Gauna', 'Salvatierra',
+    'Lapuebla de Labarca', 'Campezo', 'Lagrán', 'Urkabustaiz', 'Ayala',
+    'Alegría-Dulantzi', 'Basauri', 'Aulesti', 'Arrankudiaga', 'Sopelana',
+    'Nabarniz', 'Artea', 'Orduña', 'Zaldibar', 'Muskiz', 'Ondarroa',
+    'Abanto y Ciérvana', 'Artzentales', 'Maruri-Jatabe', 'Meñaka',
+    'Ispaster', 'Dima', 'Ubide', 'Atxondo', 'Markina-Xemein', 'Ortuella',
+    'Kortezubi', 'Santurtzi', 'Sopuerta', 'Portugalete', 'Ereño',
+    'Arratzu', 'Ermua', 'Abadiño', 'Balmaseda', 'Arakaldo', 'Larrabetzu',
+    'Bakio', 'Zierbena', 'Zaratamo', 'Erandio', 'Ugao-Miraballes',
+    'Amorebieta-Etxano', 'Bedia', 'Ibarrangelu', 'Iurreta', 'Sukarrieta',
+    'Mallabia', 'Ziortza-Bolibar', 'Mañaria', 'Etxebarria', 'Sestao',
+    'Mendata', 'Derio', 'Urduliz', 'Galdames', 'Galdakao', 'Lekeitio',
+    'Elorrio', 'Murueta', 'Muxika', 'Otxandio', 'Igorre', 'Mundaka',
+    'Laukiz', 'Morga', 'Arrigorriaga', 'Elantxobe', 'Carranza', 'Mendexa',
+    'Getxo', 'Ajangiz', 'Lemoiz', 'Zeanuri', 'Orozko', 'Loiu', 'Mungia',
+    'Sondika', 'Gamiz-Fika', 'Barrika', 'Garai', 'Zamudio', 'Amoroto',
+    'Berriatua', 'Lezama', 'Durango', 'Ea', 'Arantzazu', 'Errigoiti',
+    'Leioa', 'Trápaga', 'Trucios-Turtzioz', 'Izurtza', 'Arrieta',
+    'Etxebarri', 'Bilbao', 'Gizaburuaga', 'Munitibar', 'Gordexola',
+    'Zeberio', 'Alonsotegi', 'Fruiz', 'Plentzia', 'Gorliz', 'Gernika-Lumo',
+    'Busturia', 'Bermeo', 'Gautegiz Arteaga', 'Güeñes', 'Lanestosa',
+    'Areatza', 'Lemoa', 'Zalla', 'Forua', 'Berango', 'Gatika', 'Berriz',
+    'Barakaldo', 'Ormaiztegi', 'Altzo', 'Orendain', 'Idiazabal', 'Gaintza',
+    'Zumarraga', 'Segura', 'Gabiria', 'Lezo', 'Zestoa', 'Mutiloa',
+    'Astigarraga', 'Zegama', 'Aizarnazabal', 'Orio', 'Elgeta', 'Irun',
+    'Zaldibia', 'Orexa', 'Lazkao', 'Tolosa', 'Belauntza', 'Mendaro',
+    'Olaberria', 'Ezkio-Itsaso', 'Alegia', 'Azpeitia', 'Leintz-Gatzaga',
+    'Urretxu', 'Berrobi', 'Zumaia', 'Albiztur', 'Aia', 'Anoeta',
+    'Larraul', 'Amezketa', 'Usurbil', 'Deba', 'Getaria', 'Baliarrain',
+    'Alkiza', 'Arama', 'Asteasu', 'Lizartza', 'Oñati', 'Villabona',
+    'Lasarte-Oria', 'Berastegi', 'Eskoriatza', 'Ikaztegieta',
+    'Abaltzisketa', 'Ordizia', 'Aduna', 'Errezil', 'Hondarribia',
+    'Aretxabaleta', 'Legorreta', 'Elduain', 'Leaburu', 'Bergara',
+    'Andoain', 'Ibarra', 'Mutriku', 'Zizurkil', 'Bidegoian', 'Irura',
+    'Altzaga', 'Gaztelu', 'Zarautz', 'Hernialde', 'Errenteria',
+    'Oiartzun', 'Urnieta', 'Soraluze-Placencia de las Armas', 'Ataun',
+    'Beizama', 'Azkoitia', 'Pasaia', 'Elgoibar', 'Itsasondo', 'Hernani',
+    'Eibar', 'Arrasate-Mondragón', 'Donostia-San Sebastián', 'Zerain',
+    'Beasain', 'Legazpi', 'Antzuola']
+
+municipios = [m.decode("utf-8") for m in municipios]
+
+
 def isAnyImportantWord(phrase, wordlist):
     for w in wordlist:
         if w in phrase.lower():
@@ -77,7 +130,7 @@ def scrappList():
         page = 1
         isfinalpage = False
         while not isfinalpage:
-            isfinalpage = True            
+            isfinalpage = True
             params = {
                 'cfechaH': enddate.strftime('%d/%m/%Y'),
                 'cfechaD': startdate.strftime('%d/%m/%Y'),
@@ -102,7 +155,7 @@ def scrappList():
                             title = evspan.find('a').contents[0]
                     if isAnyImportantWord(title, importantworddict):
                         scrappEviction(cpartido=cpartido, location=location, url=detailsurl, title=title, cancelled=cancelled)
-                    
+
             page += PAGINATION
 
 def scrappEviction(cpartido, location, url, title, cancelled):
@@ -136,6 +189,11 @@ def scrappEviction(cpartido, location, url, title, cancelled):
     evicdict['Partido Judicial'] = cpartidos[cpartido]
     evicdict['Resumen'] = title
     evicdict['Cancelado'] = cancelled
+
+    for municipio in municipios:
+        if municipio in title:
+            evicdict['Municipio'] = municipio
+            break
 
     if 'hipotecari' in evicdict['Procedimiento judicial']:
         for a, b in evicdict.items():
