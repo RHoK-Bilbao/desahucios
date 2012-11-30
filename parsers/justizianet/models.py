@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Unicode, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, Integer, Unicode, Float, DateTime, ForeignKey, UniqueConstraint, Boolean
 from sqlalchemy.orm import relation, backref
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -14,18 +14,39 @@ engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle
 
 Base = declarative_base()
 
-class User(Base):
-	__tablename__ = 'Users'
+class Desahucio(Base):
+	__tablename__ = 'Desahucios'
 
 	id = Column(Integer, primary_key = True)
-	username = Column(Unicode(50), nullable = False)
+	fecha = Column(DateTime)
+	url = Column(Unicode(200))
+	valoracion = Column(Float)
+	cancelado = Column(Boolean)
+	deposito = Column(Float)
+	resumen = Column(Unicode(200))
+	procedimiento_judicial = Column(Unicode(200))
+	direccion = Column(Unicode(200))
+	nig = Column(Unicode(200))
 	
-	def __init__(self, username):
-		self.username = username
+	def __init__(self, fecha, url, valoracion, cancelado, deposito, resumen, procedimiento_judicial, direccion, nig):
+		self.fecha = fecha
+		self.url = url
+		self.valoracion = valoracion
+		self.cancelado = cancelado
+		self.deposito = deposito
+		self.resumen = resumen
+		self.procedimiento_judicial = procedimiento_judicial
+		self.direccion = direccion
+		self.nig = nig
 
-class Address(Base):
-	__tablename__ = 'Addresses'
+class PartidoJudicial(Base):
+	__tablename__ = 'PartidosJudiciales'
 	id = Column(Integer, primary_key = True)
+	nombre = Column(Unicode(50))
+	organo_judicial = Column(Unicode(200))
+	telefono = Column(Unicode(15))
+
+
 	street = Column(Unicode(50), nullable = False)
 	user_id = Column(Integer, ForeignKey('Users.id'), nullable = False)
 	user = relation(User.__name__, backref = backref('addresses', order_by = id, cascade = 'all,delete'))
@@ -34,11 +55,19 @@ class Address(Base):
 		self.street = street
 		self.user   = user
 
+'''class PartidoJudicial(Base):
+	__tablename__ = 'PartidosJudiciales'
+	id = Column(Integer, primary_key = True)
+	nombre = Column(Unicode(50))
+	organo_judicial = Column(Unicode(200))
+	telefono = Column(Unicode(15))
+'''
+
 
 # Base.metadata.drop_all()
 Base.metadata.create_all(bind = engine)
 
-Session = sessionmaker(bind = engine)
+'''Session = sessionmaker(bind = engine)
 session = Session()
 
 jon = User(u"jon")
@@ -59,5 +88,5 @@ session = Session()
 jon = session.query(User).filter_by(username = 'jon').first()
 # jon = session.query(User).filter(User.username == 'jon').first()
 print jon.addresses
-print jon.addresses[0].street
+print jon.addresses[0].street'''
 

@@ -51,55 +51,35 @@ importantworddict = [
 'apartamento',
 ]
 
-municipios = [
-    'San Millán', 'Valdegovía', 'Kuartango', 'Labastida',
-    'Valle de Arana', 'Laguardia', 'Oyón-Oion', 'Baños de Ebro/Mañueta',
-    'Elburgo', 'Añana', 'Legutiano', 'Zigoitia', 'Aramaio',
-    'Arrazua-Ubarrundia', 'Llodio', 'Peñacerrada-Urizaharra',
-    'Asparrena', 'Bernedo', 'Kripan', 'Moreda de Álava', 'Samaniego',
-    'Leza', 'Arraia-Maeztu', 'Elciego', 'Elvillar', 'Armiñón', 'Lantarón',
-    'Vitoria-Gasteiz', 'Villabuena de Álava', 'Ribera Baja',
-    'Iruña de Oca', 'Zalduondo', 'Ribera Alta', 'Zambrana', 'Zuia',
-    'Navaridas', 'Artziniega', 'Barrundia', 'Lanciego', 'Okondo',
-    'Yécora', 'Amurrio', 'Berantevilla', 'Iruraiz-Gauna', 'Salvatierra',
-    'Lapuebla de Labarca', 'Campezo', 'Lagrán', 'Urkabustaiz', 'Ayala',
-    'Alegría-Dulantzi', 'Basauri', 'Aulesti', 'Arrankudiaga', 'Sopelana',
-    'Nabarniz', 'Artea', 'Orduña', 'Zaldibar', 'Muskiz', 'Ondarroa',
-    'Abanto y Ciérvana', 'Artzentales', 'Maruri-Jatabe', 'Meñaka',
-    'Ispaster', 'Dima', 'Ubide', 'Atxondo', 'Markina-Xemein', 'Ortuella',
-    'Kortezubi', 'Santurtzi', 'Sopuerta', 'Portugalete', 'Ereño',
-    'Arratzu', 'Ermua', 'Abadiño', 'Balmaseda', 'Arakaldo', 'Larrabetzu',
-    'Bakio', 'Zierbena', 'Zaratamo', 'Erandio', 'Ugao-Miraballes',
-    'Amorebieta-Etxano', 'Bedia', 'Ibarrangelu', 'Iurreta', 'Sukarrieta',
-    'Mallabia', 'Ziortza-Bolibar', 'Mañaria', 'Etxebarria', 'Sestao',
-    'Mendata', 'Derio', 'Urduliz', 'Galdames', 'Galdakao', 'Lekeitio',
-    'Elorrio', 'Murueta', 'Muxika', 'Otxandio', 'Igorre', 'Mundaka',
-    'Laukiz', 'Morga', 'Arrigorriaga', 'Elantxobe', 'Carranza', 'Mendexa',
-    'Getxo', 'Ajangiz', 'Lemoiz', 'Zeanuri', 'Orozko', 'Loiu', 'Mungia',
-    'Sondika', 'Gamiz-Fika', 'Barrika', 'Garai', 'Zamudio', 'Amoroto',
-    'Berriatua', 'Lezama', 'Durango', 'Ea', 'Arantzazu', 'Errigoiti',
-    'Leioa', 'Trápaga', 'Trucios-Turtzioz', 'Izurtza', 'Arrieta',
-    'Etxebarri', 'Bilbao', 'Gizaburuaga', 'Munitibar', 'Gordexola',
-    'Zeberio', 'Alonsotegi', 'Fruiz', 'Plentzia', 'Gorliz', 'Gernika-Lumo',
-    'Busturia', 'Bermeo', 'Gautegiz Arteaga', 'Güeñes', 'Lanestosa',
-    'Areatza', 'Lemoa', 'Zalla', 'Forua', 'Berango', 'Gatika', 'Berriz',
-    'Barakaldo', 'Ormaiztegi', 'Altzo', 'Orendain', 'Idiazabal', 'Gaintza',
-    'Zumarraga', 'Segura', 'Gabiria', 'Lezo', 'Zestoa', 'Mutiloa',
-    'Astigarraga', 'Zegama', 'Aizarnazabal', 'Orio', 'Elgeta', 'Irun',
-    'Zaldibia', 'Orexa', 'Lazkao', 'Tolosa', 'Belauntza', 'Mendaro',
-    'Olaberria', 'Ezkio-Itsaso', 'Alegia', 'Azpeitia', 'Leintz-Gatzaga',
-    'Urretxu', 'Berrobi', 'Zumaia', 'Albiztur', 'Aia', 'Anoeta',
-    'Larraul', 'Amezketa', 'Usurbil', 'Deba', 'Getaria', 'Baliarrain',
-    'Alkiza', 'Arama', 'Asteasu', 'Lizartza', 'Oñati', 'Villabona',
-    'Lasarte-Oria', 'Berastegi', 'Eskoriatza', 'Ikaztegieta',
-    'Abaltzisketa', 'Ordizia', 'Aduna', 'Errezil', 'Hondarribia',
-    'Aretxabaleta', 'Legorreta', 'Elduain', 'Leaburu', 'Bergara',
-    'Andoain', 'Ibarra', 'Mutriku', 'Zizurkil', 'Bidegoian', 'Irura',
-    'Altzaga', 'Gaztelu', 'Zarautz', 'Hernialde', 'Errenteria',
-    'Oiartzun', 'Urnieta', 'Soraluze-Placencia de las Armas', 'Ataun',
-    'Beizama', 'Azkoitia', 'Pasaia', 'Elgoibar', 'Itsasondo', 'Hernani',
-    'Eibar', 'Arrasate-Mondragón', 'Donostia-San Sebastián', 'Zerain',
-    'Beasain', 'Legazpi', 'Antzuola']
+municipios = ['ABADIÑO', 'ABANTO Y CIERVANA-ABANTO ZIERBENA', 'AJANGIZ', 'ALONSOTEGI', 'AMOREBIETA-ETXANO', 
+'AMOROTO', 'ARAKALDO', 'ARANTZAZU', 'AREATZA', 'ARRANKUDIAGA', 'ARRATZU', 'ARRIETA', 'ARRIGORRIAGA', 'ARTEA', 
+'ARTZENTALES', 'ATXONDO', 'AULESTI', 'BAKIO', 'BALMASEDA', 'BARAKALDO', 'BARRIKA', 'BASAURI', 'BEDIA', 'BERANGO', 
+'BERMEO', 'BERRIATUA', 'BERRIZ', 'BILBAO', 'BUSTURIA', 'DERIO', 'DIMA', 'DURANGO', 'EA.', 'ELANTXOBE', 'ELORRIO', 
+'ERANDIO', 'EREÑO', 'ERMUA', 'ERRIGOITI', 'ETXEBARRI, ANTEIGLESIA DE SAN ESTEBAN-ETXEBARRI DO', 'ETXEBARRIA', 'FORUA', 
+'FRUIZ', 'GALDAKAO', 'GALDAMES', 'GAMIZ-FIKA', 'GARAY', 'GATIKA', 'GAUTEGIZ ARTEAGA', 'GERNIKA-LUMO', 'GETXO', 'GIZABURUAGA', 
+'GORDEXOLA', 'GORLIZ', 'GÜEÑES', 'IBARRANGELU', 'IGORRE', 'ISPASTER', 'IURRETA', 'IZURTZA', 'KARRANTZA HARANA/VALLE DE CARRANZA', 
+'KORTEZUBI', 'LANESTOSA', 'LARRABETZU', 'LAUKIZ', 'LEIOA', 'LEKEITIO', 'LEMOA', 'LEMOIZ', 'LEZAMA', 'LOIU', 'MALLABIA', 
+'MARKINA-XEMEIN', 'MARURI-JATABE', 'MAÑARIA', 'MENDATA', 'MENDEXA', 'MEÑAKA', 'MORGA', 'MUNDAKA', 'MUNGIA', 
+'MUNITIBAR-ARBATZEGI GERRIKAITZ', 'MURUETA', 'MUSKIZ', 'MUXIKA', 'NABARNIZ', 'ONDARROA', 'OROZKO', 'ORTUELLA', 
+'OTXANDIO', 'PLENTZIA', 'PORTUGALETE', 'SANTURTZI', 'SESTAO', 'SONDIKA', 'SOPELANA', 'SOPUERTA', 'SUKARRIETA', 
+'TRUCIOS-TURTZIOZ', 'UBIDE', 'UGAO-MIRABALLES', 'URDULIZ', 'URDUÑA-ORDUÑA', 'VALLE DE TRAPAGA-TRAPAGARAN', 'ZALDIBAR', 
+'ZALLA', 'ZAMUDIO', 'ZARATAMO', 'ZEANURI', 'ZEBERIO', 'ZIERBENA', 'ZIORTZA-BOLIBAR', 'ALEGRIA-DULANTZI', 'AMURRIO', 'ARAMAIO', 
+'ARMIÑON', 'ARRAIA-MAEZTU', 'ARRAZUA-UBARRUNDIA', 'ARTZINIEGA', 'ASPARRENA', 'AYALA/AIARA', 'AÑANA', 'BARRUNDIA', 
+'BAÑOS DE EBRO/MAÑUETA', 'BERANTEVILLA', 'BERNEDO', 'CAMPEZO/KANPEZU', 'ELBURGO/BURGELU', 'ELCIEGO', 'ELVILLAR/BILAR', 
+'HARANA/VALLE DE ARANA', 'IRURAIZ-GAUNA', 'IRUÑA OKA/IRUÑA DE OCA', 'KRIPAN', 'KUARTANGO', 'LABASTIDA', 'LAGRAN', 'LAGUARDIA', 
+'LANCIEGO/LANTZIEGO', 'LANTARON', 'LAPUEBLA DE LABARCA', 'LEGUTIANO', 'LEZA', 'LLODIO', 'MOREDA DE ALAVA', 'NAVARIDAS', 'OKONDO', 
+'OYON-OION', 'PEÑACERRADA-URIZAHARRA', 'RIBERA ALTA', 'RIBERA BAJA/ERRIBERA BEITIA', 'SALVATIERRA/AGURAIN', 'SAMANIEGO', 
+'SAN MILLAN/DONEMILIAGA', 'URKABUSTAIZ', 'VALDEGOVIA', 'VILLABUENA DE ALAVA/ESKUERNAGA', 'VITORIA-GASTEIZ', 'YECORA/IEKORA', 
+'ZALDUONDO', 'ZAMBRANA', 'ZIGOITIA', 'ZUIA', 'ABALTZISKETA', 'ADUNA', 'AIA', 'AIZARNAZABAL', 'ALBIZTUR', 'ALEGIA', 'ALKIZA', 
+'ALTZAGA', 'ALTZO', 'AMEZKETA', 'ANDOAIN', 'ANOETA', 'ANTZUOLA', 'ARAMA', 'ARETXABALETA', 'ARRASATE/MONDRAGON', 'ASTEASU', 
+'ASTIGARRAGA', 'ATAUN', 'AZKOITIA', 'AZPEITIA', 'BALIARRAIN', 'BEASAIN', 'BEIZAMA', 'BELAUNTZA', 'BERASTEGI', 'BERGARA', 'BERROBI', 
+'BIDEGOIAN', 'DEBA', 'DONOSTIA-SAN SEBASTIAN', 'EIBAR', 'ELDUAIN', 'ELGETA', 'ELGOIBAR', 'ERRENTERIA', 'ERREZIL', 'ESKORIATZA', 
+'EZKIO-ITSASO', 'GABIRIA', 'GAINTZA', 'GAZTELU', 'GETARIA', 'HERNANI', 'HERNIALDE', 'HONDARRIBIA', 'IBARRA', 'IDIAZABAL', 
+'IKAZTEGIETA', 'IRUN', 'IRURA', 'ITSASONDO', 'LARRAUL', 'LASARTE-ORIA', 'LAZKAO', 'LEABURU', 'LEGAZPI', 'LEGORRETA', 
+'LEINTZ-GATZAGA', 'LEZO', 'LIZARTZA', 'MENDARO', 'MUTILOA', 'MUTRIKU', 'OIARTZUN', 'OLABERRIA', 'ORDIZIA', 'ORENDAIN', 
+'OREXA', 'ORIO', 'ORMAIZTEGI', 'OÑATI', 'PASAIA', 'SEGURA', 'SORALUZE/PLACENCIA DE LAS ARMAS', 'TOLOSA', 'URNIETA', 'URRETXU', 
+'USURBIL', 'VILLABONA', 'ZALDIBIA', 'ZARAUTZ', 'ZEGAMA', 'ZERAIN', 'ZESTOA', 'ZIZURKIL', 'ZUMAIA', 'ZUMARRAGA']
+
 
 municipios = [m.decode("utf-8") for m in municipios]
 
@@ -117,7 +97,6 @@ def connection(url):
         response = opener.open(url)
         data = response.read()
         soup = BeautifulSoup(data, convertEntities=BeautifulSoup.HTML_ENTITIES)
-        #soup = BeautifulSoup(data)
         soup.prettify()
         print "Connection OK"
         return soup

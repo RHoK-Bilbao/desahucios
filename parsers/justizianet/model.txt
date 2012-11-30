@@ -1,0 +1,26 @@
+Desahucio
+---------
+Date - Hora + Dia
+String - URL
+Float - Valoración
+Bool - Cancelado
+Float - Depósito
+String - Resumen
+String - Procedimiento judicial
+¿String - Dirección?
+String - NIG
+
+Partido Judicial
+----------------
+String - Nombre
+String - Órgano Judicial
+String - Teléfono
+
+Municipio
+---------
+String - Nombre
+
+
+(1) Desahucio <--- ejecutado en ---> Municipio (1)
+(1) Desahucio <--- ejecutado en ---> Partido Judicial (1)
+(1) Partido Judicial <--- corresponde a ---> Municipio (N)
