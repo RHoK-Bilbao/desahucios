@@ -9,12 +9,21 @@ import httplib
 from BeautifulSoup import BeautifulSoup
 from datetime import datetime
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from model import Desahucio, Municipio, PartidoJudicial
+
+SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
+
+engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle=3600)
+
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor)
 
 DATA_URL = 'http://www.justizia.net/subastas-judiciales'
 PAGINATION = 10
 
-startdate = datetime(2012, 05, 01)
+startdate = datetime(2005, 01, 01)
 enddate = datetime.now()
 cpartidos = {
     '0101': 'AMURRIO',
@@ -81,7 +90,7 @@ municipios = ['ABADIÑO', 'ABANTO Y CIERVANA-ABANTO ZIERBENA', 'AJANGIZ', 'ALONS
 'USURBIL', 'VILLABONA', 'ZALDIBIA', 'ZARAUTZ', 'ZEGAMA', 'ZERAIN', 'ZESTOA', 'ZIZURKIL', 'ZUMAIA', 'ZUMARRAGA']
 
 
-municipios = [m.decode("utf-8") for m in municipios]
+#municipios = [m.decode("utf-8") for m in municipios]
 
 
 def isAnyImportantWord(phrase, wordlist):
@@ -91,21 +100,21 @@ def isAnyImportantWord(phrase, wordlist):
     return False
 
 def connection(url):
-    print "Connecting to... " + url
+    #print "Connecting to... " + url
     soup = None
     try:
         response = opener.open(url)
         data = response.read()
         soup = BeautifulSoup(data, convertEntities=BeautifulSoup.HTML_ENTITIES)
         soup.prettify()
-        print "Connection OK"
+        #print "Connection OK"
         return soup
     except:
         print "ERROR! Trying again..."
         connection(url=url)
 
 def scrappList():
-    for cpartido in ['0101']: #cpartidos.keys():
+    for cpartido in cpartidos.keys():
         page = 1
         isfinalpage = False
         while not isfinalpage:
@@ -175,14 +184,57 @@ def scrappEviction(cpartido, url, title, cancelled):
     if not 'Localidad' in evicdict or not evicdict['Localidad'] in municipios:
 	    evicdict['Localidad'] = evicdict['Partido Judicial']
 
+    if not 'Dirección' in evicdict:
+        evicdict['Dirección'] = ''
+
     if 'hipotecari' in evicdict['Procedimiento judicial']:
         # Meter en BD
-        for a, b in evicdict.items():
-            print a
-            print b
-            print '----'
+        print "Metiendo en DB"
+        print url
+
+        day, month, year = evicdict['Día'].split('/')
+        hour, minute = evicdict['Hora'].split(':')
+        
+        #Desahucio
+        evicdate = datetime(int(year), int(month), int(day), int(hour), int(minute))
+
+        Session = sessionmaker(bind = engine)
+        session = Session()
+
+        cpartidolocation = session.query(Municipio).filter_by(nombre = evicdict['Partido Judicial']).first()
+        
+        partidojudicial = session.query(PartidoJudicial).filter_by(municipio = cpartidolocation).first()
+        if partidojudicial is None:
+            partidojudicial = PartidoJudicial(evicdict['Partido Judicial'], evicdict['Órgano Judicial'], evicdict['Teléfono'], cpartidolocation)
+            session.add(partidojudicial)
+            session.commit()
+
+        evicval = evicdict['Valoración'][:-2].replace('.', '').replace(',', '.')
+        evicdep = evicdict['Depósito'][:-2].replace('.', '').replace(',', '.')
+        eviction = Desahucio(evicdate, evicdict['URL'], float(evicval), evicdict['Cancelado'], float(evicdep), 
+            evicdict['Resumen'], evicdict['Procedimiento judicial'], evicdict['Dirección'], evicdict['NIG'], 
+            session.query(Municipio).filter_by(nombre = evicdict['Localidad']).first(), partidojudicial)
+
+        session.add(eviction)
+        session.commit()
+
+        session.close()
+
+        print '-' * 30
+
+def loadMuniciplesInDB():
+    Session = sessionmaker(bind = engine)
+    session = Session()
+
+    for municipio in municipios:
+        munidb = Municipio(municipio)
+        session.add(munidb)
+    session.commit()
+    session.close()
+
 
 scrappList()
+#loadMuniciplesInDB()
 
 
 
