@@ -14,7 +14,7 @@ opener = urllib2.build_opener(urllib2.HTTPCookieProcessor)
 DATA_URL = 'http://www.justizia.net/subastas-judiciales'
 PAGINATION = 10
 
-startdate = datetime(2005, 05, 01)
+startdate = datetime(2012, 05, 01)
 enddate = datetime.now()
 cpartidos = {
     '0101': 'Amurrio',
@@ -33,6 +33,30 @@ cpartidos = {
     '0102': 'Vitoria-Gasteiz'
 }
 
+#wordcounter = {}
+
+importantworddict = [
+'vivienda',
+#'finca',
+#'urbana',
+'piso',
+'casa',
+#'local',
+#'parcela',
+#'garaje',
+#'heredad',
+#'lonja',
+#'pabellón',
+#'solar',
+'apartamento',
+]
+
+def isAnyImportantWord(phrase, wordlist):
+    for w in wordlist:
+        if w in phrase.lower():
+            return True
+    return False
+
 def connection(url):
     print "Connecting to... " + url
     soup = None
@@ -49,16 +73,9 @@ def connection(url):
         connection(url=url)
 
 def scrappList():
-    #Initial and final dates
-    #init = datetime(2012, 01, 1)
-    #?cfechaH=17/11/2012&cfechaD=01/01/2012&cpartido=4802&ctipo=INMU&primerElem=84'
-
-    headers = {}
-
-    page = 1
-    isfinalpage = False
-
-    for cpartido in cpartidos.keys():
+    for cpartido in ['0101']: #cpartidos.keys():
+        page = 1
+        isfinalpage = False
         while not isfinalpage:
             isfinalpage = True            
             params = {
@@ -73,17 +90,22 @@ def scrappList():
 
             for ev in evlisthtml.findAll('tr'):
                 if (ev.has_key('class') and "vevent" in ev['class']):
+                    cancelled = False
+                    if ev.has_key('title'):
+                        cancelled = True
                     isfinalpage = False
                     for evspan in ev.findAll('span'):
                         if (evspan.has_key('class') and "location" in evspan['class']):
                             location = evspan.contents[0]
                         elif (evspan.has_key('class') and "summary" in evspan['class']):
                             detailsurl = evspan.find('a')['href']
-                    scrappEviction(cpartido=cpartido, location=location, url=detailsurl)
-
+                            title = evspan.find('a').contents[0]
+                    if isAnyImportantWord(title, importantworddict):
+                        scrappEviction(cpartido=cpartido, location=location, url=detailsurl, title=title, cancelled=cancelled)
+                    
             page += PAGINATION
 
-def scrappEviction(cpartido, location, url):
+def scrappEviction(cpartido, location, url, title, cancelled):
     # print cpartidos[cpartido]
     # print location
     # print url
@@ -99,6 +121,8 @@ def scrappEviction(cpartido, location, url):
                         etiqueta = datum.contents[0].contents[0]
                     except:
                         etiqueta = datum.contents[0]
+                    if etiqueta.encode('utf-8')[-1] == ':':
+                        etiqueta = etiqueta.encode('utf-8')[:-1]
                 elif (datum.has_key('class') and "dato" in datum['class']):
                     dato = ''
                     try:
@@ -107,9 +131,32 @@ def scrappEviction(cpartido, location, url):
                         dato = datum.contents[0]
             evicdict[etiqueta] = dato
 
-    for a, b  in evicdict.items():
-        print a
-        print b
-        print '-'*10
+    evicdict['Localidad'] = location
+    evicdict['URL'] = url
+    evicdict['Partido Judicial'] = cpartidos[cpartido]
+    evicdict['Resumen'] = title
+    evicdict['Cancelado'] = cancelled
+
+    if 'hipotecari' in evicdict['Procedimiento judicial']:
+        for a, b in evicdict.items():
+            print a
+            print b
+            print '----'
 
 scrappList()
+
+
+
+
+
+'''
+For wordlist creation:
+----------------------
+
+for token in re.split('[.,\/\s]', title):
+                        wordcounter[token.lower()] = wordcounter.get(token.lower(), 0) + 1
+
+import operator
+sorted_wordlist = sorted(wordcounter.iteritems(), key=operator.itemgetter(1))
+for word in sorted_wordlist:
+    print word'''
