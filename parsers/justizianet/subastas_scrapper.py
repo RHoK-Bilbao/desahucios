@@ -127,17 +127,17 @@ def scrappList():
                         cancelled = True
                     isfinalpage = False
                     for evspan in ev.findAll('span'):
-                        if (evspan.has_key('class') and "location" in evspan['class']):
-                            location = evspan.contents[0]
-                        elif (evspan.has_key('class') and "summary" in evspan['class']):
+                        #if (evspan.has_key('class') and "location" in evspan['class']):
+                        #    location = evspan.contents[0]
+                        if (evspan.has_key('class') and "summary" in evspan['class']):
                             detailsurl = evspan.find('a')['href']
                             title = evspan.find('a').contents[0]
                     if isAnyImportantWord(title, importantworddict):
-                        scrappEviction(cpartido=cpartido, location=location, url=detailsurl, title=title, cancelled=cancelled)
+                        scrappEviction(cpartido=cpartido, url=detailsurl, title=title, cancelled=cancelled)
 
             page += PAGINATION
 
-def scrappEviction(cpartido, location, url, title, cancelled):
+def scrappEviction(cpartido, url, title, cancelled):
     # print cpartidos[cpartido]
     # print location
     # print url
@@ -163,16 +163,20 @@ def scrappEviction(cpartido, location, url, title, cancelled):
                         dato = datum.contents[0]
             evicdict[etiqueta] = dato
 
-    evicdict['Localidad'] = location
     evicdict['URL'] = url
     evicdict['Partido Judicial'] = cpartidos[cpartido]
     evicdict['Resumen'] = title
     evicdict['Cancelado'] = cancelled
 
-    for municipio in municipios:
-        if municipio.lower() in title.lower():
-            evicdict['Municipio'] = municipio
-            break
+    #check valid 'Localidad'
+    if not 'Localidad' in evicdict or evicdict['Localidad'] == '.':
+        for municipio in municipios:
+            if municipio.lower() in title.lower():
+                evicdict['Localidad'] = municipio
+                break
+
+    if not 'Localidad' in evicdict or not evicdict['Localidad'] in municipios:
+	    evicdict['Localidad'] = evicdict['Partido Judicial']
 
     if 'hipotecari' in evicdict['Procedimiento judicial']:
         for a, b in evicdict.items():
