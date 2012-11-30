@@ -2,7 +2,10 @@
 # -*-*- encoding: utf-8 -*-*-
 
 import os
+import datetime
 import urllib2
+
+# pip install xlrd
 import xlrd
 
 
@@ -36,11 +39,23 @@ class RowRegistry(object):
 
 class UnemploymentExcelParser(object):
     
-    def __init__(self, fname):
-        workbook = xlrd.open_workbook(fname)
-        assert 'PARO' in workbook.sheet_names()
+    def __init__(self, directory, year, month, province):
+        fname = os.path.join(directory, 'xls', str(year), str(month), '%s.xls' % province)
 
-        self.worksheet = workbook.sheet_by_name('PARO')
+        if not os.path.exists(fname):
+            raise Exception("File %s does not exist" % fname)
+
+        print fname
+
+        workbook = xlrd.open_workbook(fname)
+        if 'PARO' in workbook.sheet_names():
+            sheet_name = 'PARO'
+        else:
+            potential_sheet_names = [ sheet_name for sheet_name in workbook.sheet_names() if sheet_name.startswith('PARO') ]
+            assert len(potential_sheet_names) == 1
+            sheet_name = potential_sheet_names[0]
+
+        self.worksheet = workbook.sheet_by_name(sheet_name)
         self.towns     = {}
         self.total     = None
 
@@ -58,7 +73,8 @@ class UnemploymentExcelParser(object):
             town_name = self.worksheet.cell_value(row, 2)
             if town_name == '':
                 return row - 1
-        return 0
+
+        return self.worksheet.nrows - 1
 
     def _format_row(self, row_pos):
         return {
@@ -83,6 +99,8 @@ class UnemploymentExcelParser(object):
     def retrieve_data(self):
         initial_row = self.search_first_town()
         last_row    = self.search_last_town()
+
+        print last_row, initial_row
         
         for row_pos in range(initial_row, last_row):
             name = self.worksheet.cell_value(row_pos, 1)
@@ -121,11 +139,27 @@ MONTHS = [
 class DownloadException(Exception):
     pass
 
+def iterate_available_data():
+    """ returns (year, month, province) for each available data """
+    today = datetime.datetime.today()
+
+    for month in range(1, 13):
+        for year in range(2005, today.year + 1):
+            if year == 2005 and month < 5:
+                continue
+
+            if year == today.year and month >= today.month:
+                continue
+
+            for province in PROVINCES:
+                yield year, month, province
+
 class Downloader(object):
     def __init__(self, directory):
         if not os.path.exists(directory):
-            raise Exception("Directory %s does not exist")
-        self.directory = directory
+            raise Exception("Directory %s does not exist" % directory)
+
+        self.directory = os.path.join(directory, 'xls')
 
     def _build_url(self, year, month, province):
 
@@ -166,21 +200,28 @@ class Downloader(object):
         open(full_path, 'w').write(excel_content)
 
     def download_all(self):
-        for month in range(1, 13):
-            for year in range(2005, 2013):
-                if year == 2005 and month < 5:
-                    continue
+        for year, month, province in iterate_available_data():
+            try:
+                self.download(year, month, province)
+            except DownloadException:
+                print "Skipping province %s for month %s and year %s" % (province, month, year)
 
-                for province in PROVINCES:
-                    try:
-                        self.download(year, month, province)
-                    except DownloadException:
-                        print "Skipping province %s for month %s and year %s" % (province, month, year)
+if __name__ == '__main__':
+    
+    DIRECTORY = 'stored_data'
 
-downloader = Downloader(os.path.join('stored_data','xls'))
-downloader.download_all()
+    # downloader = Downloader(DIRECTORY)
+    # downloader.download_all()
 
-# parser = UnemploymentExcelParser('workbook.xls')
-# parser.retrieve_data()
+    for year, month, province in iterate_available_data():
+    #    continue
+        try:
+            parser = UnemploymentExcelParser(DIRECTORY, year, month, province)
+            parser.retrieve_data()
+            print year, month, province, parser.total.total
+        except Exception as e:
+            print "Error: %s" % e
 
+    # parser = UnemploymentExcelParser(DIRECTORY, 2006, 1, 'ALBACETE')
+    # parser.retrieve_data()
 
