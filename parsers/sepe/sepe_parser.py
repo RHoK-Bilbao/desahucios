@@ -43,7 +43,7 @@ class RowRegistry(object):
         self.agriculture      = clean_data(data['agriculture'])
         self.services         = clean_data(data['services'])
         self.industry         = clean_data(data['industry'])
-        self.real_estate      = clean_data(data['real_estate'])
+        self.building         = clean_data(data['building'])
         self.first_employment = clean_data(data['first_employment'])
 
 
@@ -102,7 +102,7 @@ class UnemploymentExcelParser(object):
             'agriculture'      : self.worksheet.cell_value(row_pos, 9),
             'services'         : self.worksheet.cell_value(row_pos, 10),
             'industry'         : self.worksheet.cell_value(row_pos, 11),
-            'real_estate'      : self.worksheet.cell_value(row_pos, 12),
+            'building'         : self.worksheet.cell_value(row_pos, 12),
             'first_employment' : self.worksheet.cell_value(row_pos, 13),
         }
 
@@ -222,13 +222,23 @@ if __name__ == '__main__':
     # downloader.download_all()
 
     for year, month, province in iterate_available_data():
-    #    continue
+        continue
         try:
             parser = UnemploymentExcelParser(DIRECTORY, year, month, province)
             parser.retrieve_data()
             print year, month, province, parser.total.total
         except Exception as e:
             print "Error: %s" % e
+
+    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'BIZKAIA')
+    print ';'.join(sorted(parser.towns.keys()))
+
+    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'ARABA')
+    print ';'.join(sorted(parser.towns.keys()))
+
+    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'GIPUZKOA')
+    print ';'.join(sorted(parser.towns.keys()))
+
 
     # parser = UnemploymentExcelParser(DIRECTORY, 2012, 10, 'CACERES')
     # print parser.total.total
