@@ -51,7 +51,7 @@ class DbLoader(object):
             session.add(registry)
             
             for town in parser.towns:
-                town_instance = session.query(SepeTown).filter_by(province = provinces[province]).first()
+                town_instance = session.query(SepeTown).filter_by(province = provinces[province], name = town).first()
                 if town_instance is None:
                     town_instance = SepeTown(town, provinces[province])
                     session.add(town_instance)

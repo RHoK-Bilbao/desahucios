@@ -9,16 +9,19 @@ body {
   shape-rendering: crispEdges;
 }
 
+
+/* line-chart color */
 .area {
-  fill: steelblue;
+  fill: #0099FF;
 }
 
 svg {
   font: 10px sans-serif;
 }
 
+/* focus-context color */
 path {
-  fill: steelblue;
+  fill: #0099FF;
 }
 
 .axis path,
@@ -32,4 +35,41 @@ path {
   stroke: #fff;
   fill-opacity: .125;
   shape-rendering: crispEdges;
+}
+
+#logo {
+  margin: 3em 15em;
+}
+
+#explanation {
+  text-align: justify;
+}
+
+.center {
+  width: 100%;
+  text-align: center;
+}
+
+header {
+  background-color: #C0C0C0;
+  border-bottom: 5px solid #707070;
+}
+
+.container {
+  min-height: 35em;
+}
+
+#myContainer {
+  margin-top: 5em;
+  margin-bottom: 5em;
+}
+
+ul {
+  list-style-type: none;
+}
+
+footer {
+  background-color: #C0C0C0;
+  height: 5em;
+  border-top: 5px solid #707070;
 }
