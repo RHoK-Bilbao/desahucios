@@ -10,10 +10,12 @@ from django.conf import settings as cfg
 from webapp.models_sepe import SepeProvince, SepeTown, SepeRegistry
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 ENGINE_STR = 'mysql://%s:%s@%s/rhok_desahucios' % (cfg.DESAHUCIOS_USER, cfg.DESAHUCIOS_PASSWORD, cfg.DESAHUCIOS_HOST)
+ENGINE     = create_engine(ENGINE_STR, convert_unicode=True, pool_recycle=3600)
+session    = scoped_session(sessionmaker(bind = ENGINE))
 
 def index(request):
 	return render_to_response('website/index.html', {}, context_instance = RequestContext(request))
@@ -28,10 +30,6 @@ def focus_context(request):
 	return render_to_response('website/focus_context.html', {}, context_instance = RequestContext(request))
 
 def province_json(request, province_name): 
-    engine = create_engine(ENGINE_STR, convert_unicode=True, pool_recycle=3600)
-
-    Session = sessionmaker(bind = engine)
-    session = Session()
     try:
         province = session.query(SepeProvince).filter_by(name = province_name).first()
         if province is None:
@@ -45,15 +43,11 @@ def province_json(request, province_name):
                 'unemployed' : registry.total,
             })
     finally:
-        session.close()
+        session.remove()
 
     return HttpResponse(json.dumps(data))
 
 def town_json(request, province_name, town_name): 
-    engine = create_engine(ENGINE_STR, convert_unicode=True, pool_recycle=3600)
-
-    Session = sessionmaker(bind = engine)
-    session = Session()
     try:
         province = session.query(SepeProvince).filter_by(name = province_name).first()
         if province is None:
@@ -71,7 +65,25 @@ def town_json(request, province_name, town_name):
                 'unemployed' : registry.total,
             })
     finally:
-        session.close()
+        session.remove()
 
     return HttpResponse(json.dumps(data))
+
+def list_provinces(request):
+    try:
+        provinces = session.query(SepeProvince).all()
+        return HttpResponse(json.dumps([ province.name for province in provinces ]))
+    finally:
+        session.remove()
+
+def list_towns(request, province_name):
+    print "En list_towns"
+    try:
+        province = session.query(SepeProvince).filter_by(name = province_name).first()
+        if province is None:
+            return HttpResponse("Province not found")
+        towns = session.query(SepeTown).filter_by(province = province).all()
+        return HttpResponse(json.dumps([ town.name for town in towns ]))
+    finally:
+        session.remove()
 
