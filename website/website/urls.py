@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^provinces/(\w+)/?$',      'webapp.views.list_towns',      name='list_towns'),
     url(r'^other_chart/$',           'webapp.views.other_chart',     name='other_chart'),
     url(r'^focus_context/$',         'webapp.views.focus_context',   name='focus_context'),
+
+    url(r'^unemployment_graph/(\w*)$', 'webapp.views.show_unemployment_graph', name = 'show_unemployment_graph'),
+
     # url(r'^website/', include('website.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

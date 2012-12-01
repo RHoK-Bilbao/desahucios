@@ -89,3 +89,12 @@ def list_towns(request, province_name):
     finally:
         session.remove()
 
+def show_unemployment_graph(request, municipio):
+    if(municipio):
+        pass
+    else:
+        pass
+    return render_to_response('website/show_unemployment_chart.html', {
+            '': '',
+        },
+        context_instance = RequestContext(request))
