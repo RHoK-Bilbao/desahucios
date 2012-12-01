@@ -10,6 +10,7 @@ from django.conf import settings as cfg
 from webapp.models_sepe import SepeProvince, SepeTown, SepeRegistry
 from webapp.models_justizia import Municipio, PartidoJudicial, Desahucio
 
+import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
