@@ -1,0 +1,122 @@
+{% extends "website/base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+    <a href="/">Volver</a>
+
+    <h2>Gr&aacute;fico de desahucios vs desempleo</h2>
+	 Provincia:
+ 	<input type="textbox" value="Bizkaia" id="textbox"></input>
+    <input type="submit" value="Generar gr&aacute;fico" id="Get" />
+
+
+    <div id="chart">
+    </div>
+    <section></section>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+
+	$("#Get").click( function() {
+		var provincia = $('#textbox').val();
+
+		$.ajax({
+			url: "/desahucios/" + provincia + "/2012" ,
+	  		context: document.body,
+		}).done(
+			function (datastr) {
+	   			var chart;
+	    		var data = JSON.parse(datastr);
+
+	    		var series = [] ;
+
+	    		for( var i = 0 ; i < data.length ; ++i )
+	    		{
+	    			console.log(data[i]);
+
+					series.push({
+	    				name: data[i].town,
+	    				x: data[i].desahucios,
+	    				y: data[i].unemployed
+	    			});
+	    		}
+
+
+	        	chart = new Highcharts.Chart({
+		            chart: {
+		                renderTo: 'chart',
+		                type: 'scatter',
+						zoomType: 'xy'
+
+		            },
+		            title: {
+		                text: 'Desempleo en...'
+		            },
+		            xAxis: {
+		            	title: {
+		                    text: 'Desahucios'
+		                },
+		                labels: {
+		                    formatter: function() {
+		                        return this.value[1];
+		                    }
+		                }
+		            },
+		            yAxis: {
+		                title: {
+		                    text: 'Desempleo'
+		                },
+		                labels: {
+		                    formatter: function() {
+		                        return this.value / 1000 +'k';
+		                    }
+		                },
+						min: 0.0
+		            },
+		            tooltip: {
+		                formatter: function() {
+		                    return "" + this.point.name + "<br/>Desahucios:" + this.point.x + "<br/>Parados:" + this.point.y;
+		                }
+		            },
+		            plotOptions: {
+		                area: {
+		                    fillColor: {
+		                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+		                        stops: [
+		                            [0, Highcharts.getOptions().colors[0]],
+		                            [1, 'rgba(2,0,0,0)']
+		                        ]
+		                    },
+		                    lineWidth: 1,
+		                    marker: {
+		                        enabled: false,
+		                        states: {
+		                            hover: {
+		                                enabled: true,
+		                                radius: 5
+		                            }
+		                        }
+		                    },
+		                    shadow: false,
+		                    states: {
+		                        hover: {
+		                            lineWidth: 1
+		                        }
+		                    }
+		                }
+		            },
+		            series: [{data:series}]
+		        });
+		    });
+		});
+
+
+</script>
+
+{% endblock %}
