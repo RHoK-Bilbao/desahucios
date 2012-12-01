@@ -28,12 +28,14 @@ except:
 
 print "done"
 print "Adding content..."
-try:
-    connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
-    cursor = connection.cursor()
-    cursor.execute(rhok_db)
-    connection.commit()
-    cursor.close()
-    connection.close()
-except:
-    traceback.print_exc()
+lines = rhok_db.splitlines()
+for line in lines:
+    try:
+        connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
+        cursor = connection.cursor()
+        cursor.execute(line)
+        connection.commit()
+        cursor.close()
+        connection.close()
+    except:
+        traceback.print_exc()
