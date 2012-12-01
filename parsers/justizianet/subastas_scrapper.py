@@ -14,7 +14,10 @@ from sqlalchemy.orm import sessionmaker
 
 from model import Desahucio, Municipio, PartidoJudicial
 
+import os
+
 SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
+#SQLALCHEMY_ENGINE_STR = 'sqlite:///' + str(os.path.join(os.getcwd(), 'desahucios.db'))
 
 engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle=3600)
 
@@ -140,7 +143,7 @@ def scrappList():
                         #    location = evspan.contents[0]
                         if (evspan.has_key('class') and "summary" in evspan['class']):
                             detailsurl = evspan.find('a')['href']
-                            title = evspan.find('a').contents[0]
+                            title = evspan.find('a').contents[0].encode('utf-8')
                     if isAnyImportantWord(title, importantworddict):
                         scrappEviction(cpartido=cpartido, url=detailsurl, title=title, cancelled=cancelled)
 
@@ -167,6 +170,8 @@ def scrappEviction(cpartido, url, title, cancelled):
                         dato = datum.contents[0].contents[0]
                     except:
                         dato = datum.contents[0]
+            if str(etiqueta) not in ['Valoración', 'Depósito']:
+                dato = dato.encode('utf-8')
             evicdict[etiqueta] = dato
 
     evicdict['URL'] = url
@@ -231,7 +236,6 @@ def loadMuniciplesInDB():
         session.add(munidb)
     session.commit()
     session.close()
-
 
 scrappList()
 #loadMuniciplesInDB()
