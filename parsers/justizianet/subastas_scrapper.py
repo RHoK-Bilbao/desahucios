@@ -227,22 +227,8 @@ def scrappEviction(cpartido, url, title, cancelled):
 
         print '-' * 30
 
-def loadMuniciplesInDB():
-    Session = sessionmaker(bind = engine)
-    session = Session()
-
-    for municipio in municipios:
-        munidb = Municipio(municipio)
-        session.add(munidb)
-    session.commit()
-    session.close()
-
-scrappList()
-#loadMuniciplesInDB()
-
-
-
-
+if __name__ == "__main__":
+   scrappList();
 
 '''
 For wordlist creation:
