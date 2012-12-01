@@ -147,11 +147,13 @@ def show_province_year_month(request, province_name, year, month):
                     else:
                         return HttpResponse("invalid age")
                 else:
-                    return HttpResponse("invalid men")
+                    return HttpResponse("invalid gender")
 
+                particular_data = getattr(registry, field)
+                
                 data.append({
                     entity_name : entity.name,
-                    'unemployment' : registry.total
+                    'unemployment' : particular_data
                 })
         
         return HttpResponse(json.dumps(data))
