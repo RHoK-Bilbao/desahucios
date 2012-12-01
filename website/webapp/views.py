@@ -8,6 +8,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 
 from django.conf import settings as cfg
 from webapp.models_sepe import SepeProvince, SepeTown, SepeRegistry
+from webapp.models_justizia import Municipio, PartidoJudicial, Desahucio
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -114,6 +115,28 @@ def list_towns(request, province_name):
             return HttpResponse("Province not found")
         towns = session.query(SepeTown).filter_by(province = province).all()
         return HttpResponse(json.dumps([ town.name for town in towns ]))
+    finally:
+        session.remove()
+
+def show_desahucios(request, province_name, year, month):
+    try:
+        province = session.query(SepeProvince).filter_by(name = province_name).first()
+        if province is None:
+            return HttpResponse("Province not found")
+        towns = session.query(SepeTown).filter_by(province = province).all()
+        data = []
+        for town in towns:
+            municipio = session.query(Municipio).filter_by(nombre = town.name).first()
+            if municipio is not None:
+                desahucios = session.query(Desahucio).filter(Desahucio.municipio == municipio, sqlalchemy.extract('year', Desahucio.fecha) == int(year), sqlalchemy.extract('month', Desahucio.fecha) == int(month)).count()
+                registry = session.query(SepeRegistry).filter_by(town = town, year = int(year), month = int(month)).first()
+                if registry is not None:
+                    data.append({
+                        'town'       : town.name,
+                        'desahucios' : desahucios,
+                        'unemployed' : registry.total,
+                    })
+        return HttpResponse(json.dumps(data))
     finally:
         session.remove()
 

@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^province/(\w+)/(\d+)/(\d+)/$',  'webapp.views.show_province_year_month',   name='show_province_year_month'),
     url(r'^provinces/?$',            'webapp.views.list_provinces',  name='list_provinces'),
     url(r'^provinces/(\w+)/?$',      'webapp.views.list_towns',      name='list_towns'),
+    url(r'^desahucios/(\w+)/(\d+)/(\d+)/$', 'webapp.views.show_desahucios', name = 'show_desahucios'),
     url(r'^other_chart/$',           'webapp.views.other_chart',     name='other_chart'),
     url(r'^focus_context/$',         'webapp.views.focus_context',   name='focus_context'),
 
