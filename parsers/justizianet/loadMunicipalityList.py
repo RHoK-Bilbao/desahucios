@@ -2,7 +2,7 @@
 
 from subastas_scrapper import *
 
-def loadMuniciplesInDB():
+def loadMunicipalityListInDB():
     Session = sessionmaker(bind = engine)
     session = Session()
 
@@ -13,4 +13,4 @@ def loadMuniciplesInDB():
     session.close()
 
 if __name__ == "__main__":
-    loadMuniciplesInDB()
+    loadMunicipalityListInDB()
