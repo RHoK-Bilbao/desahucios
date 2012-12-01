@@ -37,3 +37,6 @@ nosetests.xml
 # Logging
 *.log
 *.out
+
+# MAC stuff
+.DS_Store

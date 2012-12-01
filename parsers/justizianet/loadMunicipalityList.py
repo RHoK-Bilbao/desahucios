@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+from model import *
 from subastas_scrapper import *
 
 def loadMunicipalityListInDB():
@@ -13,4 +14,8 @@ def loadMunicipalityListInDB():
     session.close()
 
 if __name__ == "__main__":
+    print "Creating db schema"
+    Base.metadata.create_all(bind = engine)
+
+    print "Loading municiopality list"
     loadMunicipalityListInDB()

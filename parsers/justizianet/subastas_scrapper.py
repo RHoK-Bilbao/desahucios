@@ -17,7 +17,6 @@ from model import Desahucio, Municipio, PartidoJudicial
 import os
 
 SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
-#SQLALCHEMY_ENGINE_STR = 'sqlite:///' + str(os.path.join(os.getcwd(), 'desahucios.db'))
 
 engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle=3600)
 
