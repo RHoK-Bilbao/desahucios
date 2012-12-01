@@ -112,8 +112,9 @@ def connection(url):
         #print "Connection OK"
         return soup
     except:
-        print "ERROR! Trying again..."
-        connection(url=url)
+        print "ERROR accessing..."
+        print url
+        return None
 
 def scrappList():
     for cpartido in cpartidos.keys():
@@ -152,79 +153,77 @@ def scrappEviction(cpartido, url, title, cancelled):
     evicdict = {}
 
     evhtml = connection(url)
-    for det in evhtml.findAll('div'):
-        if (det.has_key('class') and "fila" in det['class']):
-            for datum in det.findAll('div'):
-                if (datum.has_key('class') and "etiqueta" in datum['class']):
-                    etiqueta = ''
-                    try:
-                        etiqueta = datum.contents[0].contents[0]
-                    except:
-                        etiqueta = datum.contents[0]
-                    if etiqueta.encode('utf-8')[-1] == ':':
-                        etiqueta = etiqueta.encode('utf-8')[:-1]
-                elif (datum.has_key('class') and "dato" in datum['class']):
-                    dato = ''
-                    try:
-                        dato = datum.contents[0].contents[0]
-                    except:
-                        dato = datum.contents[0]
-            if str(etiqueta) not in ['Valoración', 'Depósito']:
-                dato = dato.encode('utf-8')
-            evicdict[etiqueta] = dato
+    if evhtml is not None:
+        for det in evhtml.findAll('div'):
+            if (det.has_key('class') and "fila" in det['class']):
+                for datum in det.findAll('div'):
+                    if (datum.has_key('class') and "etiqueta" in datum['class']):
+                        etiqueta = ''
+                        try:
+                            etiqueta = datum.contents[0].contents[0]
+                        except:
+                            etiqueta = datum.contents[0]
+                        if etiqueta.encode('utf-8')[-1] == ':':
+                            etiqueta = etiqueta.encode('utf-8')[:-1]
+                    elif (datum.has_key('class') and "dato" in datum['class']):
+                        dato = ''
+                        try:
+                            dato = datum.contents[0].contents[0]
+                        except:
+                            dato = datum.contents[0]
+                if str(etiqueta) not in ['Valoración', 'Depósito']:
+                    dato = dato.encode('utf-8')
+                evicdict[etiqueta] = dato
 
-    evicdict['URL'] = url
-    evicdict['Partido Judicial'] = cpartidos[cpartido]
-    evicdict['Resumen'] = title
-    evicdict['Cancelado'] = cancelled
+        evicdict['URL'] = url
+        evicdict['Partido Judicial'] = cpartidos[cpartido]
+        evicdict['Resumen'] = title
+        evicdict['Cancelado'] = cancelled
 
-    #check valid 'Localidad'
-    if not 'Localidad' in evicdict or evicdict['Localidad'] == '.':
-        for municipio in municipios:
-            if municipio.lower() in title.lower():
-                evicdict['Localidad'] = municipio
-                break
+        #check valid 'Localidad'
+        if not 'Localidad' in evicdict or evicdict['Localidad'] == '.':
+            for municipio in municipios:
+                if municipio.lower() in title.lower():
+                    evicdict['Localidad'] = municipio
+                    break
 
-    if not 'Localidad' in evicdict or not evicdict['Localidad'] in municipios:
-	    evicdict['Localidad'] = evicdict['Partido Judicial']
+        if not 'Localidad' in evicdict or not evicdict['Localidad'] in municipios:
+            evicdict['Localidad'] = evicdict['Partido Judicial']
 
-    if not 'Dirección' in evicdict:
-        evicdict['Dirección'] = ''
+        if not 'Dirección' in evicdict:
+            evicdict['Dirección'] = ''
 
-    if 'hipotecari' in evicdict['Procedimiento judicial']:
-        # Meter en BD
-        print "Metiendo en DB"
-        print url
+        if 'hipotecari' in evicdict['Procedimiento judicial']:
+            # Meter en BD
+            print "Metiendo en DB"
+            print url
 
-        day, month, year = evicdict['Día'].split('/')
-        hour, minute = evicdict['Hora'].split(':')
-        
-        #Desahucio
-        evicdate = datetime(int(year), int(month), int(day), int(hour), int(minute))
+            day, month, year = evicdict['Día'].split('/')
+            hour, minute = evicdict['Hora'].split(':')
+            #Desahucio
+            evicdate = datetime(int(year), int(month), int(day), int(hour), int(minute))
+            Session = sessionmaker(bind = engine)
+            session = Session()
 
-        Session = sessionmaker(bind = engine)
-        session = Session()
+            cpartidolocation = session.query(Municipio).filter_by(nombre = evicdict['Partido Judicial']).first()
+            partidojudicial = session.query(PartidoJudicial).filter_by(municipio = cpartidolocation).first()
+            if partidojudicial is None:
+                partidojudicial = PartidoJudicial(evicdict['Partido Judicial'], evicdict['Órgano Judicial'], evicdict['Teléfono'], cpartidolocation)
+                session.add(partidojudicial)
+                session.commit()
 
-        cpartidolocation = session.query(Municipio).filter_by(nombre = evicdict['Partido Judicial']).first()
-        
-        partidojudicial = session.query(PartidoJudicial).filter_by(municipio = cpartidolocation).first()
-        if partidojudicial is None:
-            partidojudicial = PartidoJudicial(evicdict['Partido Judicial'], evicdict['Órgano Judicial'], evicdict['Teléfono'], cpartidolocation)
-            session.add(partidojudicial)
+            evicval = evicdict['Valoración'][:-2].replace('.', '').replace(',', '.')
+            evicdep = evicdict['Depósito'][:-2].replace('.', '').replace(',', '.')
+            eviction = Desahucio(evicdate, evicdict['URL'], float(evicval), evicdict['Cancelado'], float(evicdep),
+                evicdict['Resumen'], evicdict['Procedimiento judicial'], evicdict['Dirección'], evicdict['NIG'],
+                session.query(Municipio).filter_by(nombre = evicdict['Localidad']).first(), partidojudicial)
+
+            session.add(eviction)
             session.commit()
 
-        evicval = evicdict['Valoración'][:-2].replace('.', '').replace(',', '.')
-        evicdep = evicdict['Depósito'][:-2].replace('.', '').replace(',', '.')
-        eviction = Desahucio(evicdate, evicdict['URL'], float(evicval), evicdict['Cancelado'], float(evicdep), 
-            evicdict['Resumen'], evicdict['Procedimiento judicial'], evicdict['Dirección'], evicdict['NIG'], 
-            session.query(Municipio).filter_by(nombre = evicdict['Localidad']).first(), partidojudicial)
+            session.close()
 
-        session.add(eviction)
-        session.commit()
-
-        session.close()
-
-        print '-' * 30
+            print '-' * 30
 
 if __name__ == "__main__":
    scrappList();
@@ -240,4 +239,3 @@ import operator
 sorted_wordlist = sorted(wordcounter.iteritems(), key=operator.itemgetter(1))
 for word in sorted_wordlist:
     print word'''
-
