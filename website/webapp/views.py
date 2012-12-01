@@ -24,14 +24,8 @@ session    = scoped_session(sessionmaker(bind = ENGINE))
 def index(request):
 	return render_to_response('website/index.html', {}, context_instance = RequestContext(request))
 
-def line_chart(request):
-	return render_to_response('website/line_chart.html', {}, context_instance = RequestContext(request))
-
 def other_chart(request):
 	return render_to_response('website/other_chart.html', {}, context_instance = RequestContext(request))
-
-def focus_context(request):
-	return render_to_response('website/focus_context.html', {}, context_instance = RequestContext(request))
 
 def province_json(request, province_name): 
     try:
@@ -245,12 +239,9 @@ def show_province_year_month(request, province_name, year, month):
     finally:
         session.remove()
 
-def show_unemployment_graph(request, municipio):
-    if(municipio):
-        pass
-    else:
-        pass
-    return render_to_response('website/show_unemployment_chart.html', {
-            '': '',
-        },
-        context_instance = RequestContext(request))
+def show_unemployment_graph(request):
+    return render_to_response('website/show_unemployment_chart.html', {}, context_instance = RequestContext(request))
+
+def show_eviction_graph(request):
+    return render_to_response('website/show_eviction_chart.html', {}, context_instance = RequestContext(request))
+

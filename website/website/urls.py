@@ -7,7 +7,6 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
     # Examples:
     url(r'^$',                       'webapp.views.index',           name='index'),
-    url(r'^line-chart/$',            'webapp.views.line_chart',      name='line_chart'),
     url(r'^province/(\w+)/$',       'webapp.views.province_json',   name='province_json'),
     url(r'^province/(\w+)/(\w+)/$', 'webapp.views.town_json',       name='town_json'),
     url(r'^province/(\w+)/(\d+)/(\d+)/$',  'webapp.views.show_province_year_month',   name='show_province_year_month'),
@@ -16,9 +15,10 @@ urlpatterns = patterns('',
     url(r'^desahucios/(\w+)/(\d+)/(\d+)/$', 'webapp.views.show_desahucios', name = 'show_desahucios'),
     url(r'^desahucios/(\w+)/(\d+)/$', 'webapp.views.show_desahucios_anyo', name = 'show_desahucios_anyo'),
     url(r'^other_chart/$',           'webapp.views.other_chart',     name='other_chart'),
-    url(r'^focus_context/$',         'webapp.views.focus_context',   name='focus_context'),
+   
 
-    url(r'^unemployment_graph/(\w*)$', 'webapp.views.show_unemployment_graph', name = 'show_unemployment_graph'),
+    url(r'^unemployment_graph/$', 'webapp.views.show_unemployment_graph', name = 'show_unemployment_graph'),
+    url(r'^eviction_graph/$', 'webapp.views.show_eviction_graph', name = 'show_eviction_graph'),
 
     # url(r'^website/', include('website.foo.urls')),
 
