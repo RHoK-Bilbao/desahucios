@@ -51,10 +51,39 @@ def province_json(request, province_name):
 
 def town_json(request, province_name, town_name): 
     try:
+        gender   = request.GET.get('gender',   'all').lower()
+        age      = request.GET.get('age',      'all').lower()
+
         province = session.query(SepeProvince).filter_by(name = province_name).first()
         if province is None:
             return HttpResponse("Province not found")
 
+
+        if town_name.lower() == 'all':
+            towns = session.query(SepeTown).filter_by(province = province).all()
+            data = []
+            for town in towns:
+                registries = session.query(SepeRegistry).filter_by(town = town).all()
+
+                town_results = []
+
+                for registry in registries:
+                    field = _get_field(gender, age)
+                    if not isinstance(field, basestring):
+                        return field
+
+                    particular_data = getattr(registry, field)
+                    town_results.append({
+                        'year'       : registry.year,
+                        'month'      : registry.month,
+                        'unemployed' : particular_data
+                    })
+                data.append({
+                    'town'    : town.name,
+                    'results' : town_results
+                })
+            return HttpResponse(json.dumps(data))
+                            
         town = session.query(SepeTown).filter_by(name = town_name, province = province).first()
         if town is None:
             return HttpResponse("Town not found")
@@ -88,6 +117,44 @@ def list_towns(request, province_name):
     finally:
         session.remove()
 
+def _get_field(gender, age):
+    if gender == 'all':
+        if age == 'all':
+            field = 'total'
+        elif '25' in age:
+            field = 'less_25'
+        elif '45' in age:
+            field = 'less_45'
+        elif 'older' in age:
+            field = 'older'
+        else:
+            return HttpResponse("invalid age")
+    elif gender == 'men':
+        if age == 'all':
+            field = 'men'
+        elif '25' in age:
+            field = 'men_less_25'
+        elif '45' in age:
+            field = 'men_less_45'
+        elif 'older' in age:
+            field = 'men_older'
+        else:
+            return HttpResponse("invalid age")
+    elif gender == 'women':
+        if age == 'all':
+            field = 'women'
+        elif '25' in age:
+            field = 'women_less_25'
+        elif '45' in age:
+            field = 'women_less_45'
+        elif 'older' in age:
+            field = 'women_older'
+        else:
+            return HttpResponse("invalid age")
+    else:
+        return HttpResponse("invalid gender")
+    return field
+
 def show_province_year_month(request, province_name, year, month):
     try:
         gender   = request.GET.get('gender',   'all').lower()
@@ -113,41 +180,10 @@ def show_province_year_month(request, province_name, year, month):
                 registry = session.query(SepeRegistry).filter_by(province = entity, year = int(year), month = int(month)).first()
 
             if registry is not None:
-                if gender == 'all':
-                    if age == 'all':
-                        field = 'total'
-                    elif '25' in age:
-                        field = 'less_25'
-                    elif '45' in age:
-                        field = 'less_45'
-                    elif 'older' in age:
-                        field = 'older'
-                    else:
-                        return HttpResponse("invalid age")
-                elif gender == 'men':
-                    if age == 'all':
-                        field = 'men'
-                    elif '25' in age:
-                        field = 'men_less_25'
-                    elif '45' in age:
-                        field = 'men_less_45'
-                    elif 'older' in age:
-                        field = 'men_older'
-                    else:
-                        return HttpResponse("invalid age")
-                elif gender == 'women':
-                    if age == 'all':
-                        field = 'women'
-                    elif '25' in age:
-                        field = 'women_less_25'
-                    elif '45' in age:
-                        field = 'women_less_45'
-                    elif 'older' in age:
-                        field = 'women_older'
-                    else:
-                        return HttpResponse("invalid age")
-                else:
-                    return HttpResponse("invalid gender")
+    
+                field = _get_field(gender, age)
+                if not isinstance(field, basestring):
+                    return field
 
                 particular_data = getattr(registry, field)
                 
