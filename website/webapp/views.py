@@ -79,7 +79,6 @@ def list_provinces(request):
         session.remove()
 
 def list_towns(request, province_name):
-    print "En list_towns"
     try:
         province = session.query(SepeProvince).filter_by(name = province_name).first()
         if province is None:
@@ -89,3 +88,39 @@ def list_towns(request, province_name):
     finally:
         session.remove()
 
+def show_province_year_month(request, province_name, year, month):
+    try:
+        
+        if province_name.lower() == 'all':
+            towns = False
+            entities = session.query(SepeProvince).all()
+        else:
+            towns = True
+            province = session.query(SepeProvince).filter_by(name = province_name).first()
+            if province is None:
+                return HttpResponse("Province not found")
+            entities = session.query(SepeTown).filter_by(province = province).all()
+
+        data = {}
+        for entity in entities:
+            if towns:
+                registry = session.query(SepeRegistry).filter_by(town = entity, year = int(year), month = int(month)).first()
+            else:
+                registry = session.query(SepeRegistry).filter_by(province = entity, year = int(year), month = int(month)).first()
+
+            if registry is not None:
+                data[entity.name] = registry.total
+        
+        return HttpResponse(json.dumps(data))
+    finally:
+        session.remove()
+
+def show_unemployment_graph(request, municipio):
+    if(municipio):
+        pass
+    else:
+        pass
+    return render_to_response('website/show_unemployment_chart.html', {
+            '': '',
+        },
+        context_instance = RequestContext(request))

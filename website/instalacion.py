@@ -3,6 +3,7 @@ import os
 import getpass
 import traceback
 import os
+import sys
 
 
 os.system("pip install -r requirements.txt")
@@ -22,9 +23,14 @@ print "Creating database..."
 try:
     connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
     cursor = connection.cursor()
-    cursor.execute("""CREATE DATABASE IF NOT EXISTS `rhok_desahucios` ;
-    CREATE USER 'rhok'@'localhost' IDENTIFIED BY 'rhok';
-    GRANT ALL PRIVILEGES ON `rhok_desahucios`.* TO `rhok`@`localhost`;""")
+    if sys.platform.startswith('linux'):
+        cursor.execute("""CREATE DATABASE IF NOT EXISTS `rhok_desahucios` ;
+        CREATE USER 'rhok'@'localhost' IDENTIFIED BY 'rhok';
+        GRANT ALL PRIVILEGES ON `rhok_desahucios`.* TO `rhok`@`localhost`;""")
+    else:
+        cursor.execute("""CREATE DATABASE IF NOT EXISTS `rhok_desahucios` ;
+        CREATE USER 'rhok' IDENTIFIED BY 'rhok';
+        GRANT ALL PRIVILEGES ON `rhok_desahucios`.* TO `rhok`;""")
     connection.commit()
     cursor.close()
     connection.close()
@@ -33,14 +39,4 @@ except:
 
 print "done"
 print "Adding content..."
-lines = rhok_db.splitlines()
-for line in lines:
-    try:
-        connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
-        cursor = connection.cursor()
-        cursor.execute(line)
-        connection.commit()
-        cursor.close()
-        connection.close()
-    except:
-        traceback.print_exc()
+os.system("mysql -urhok -p rhok_desahucios < rhok_desahucios.sql")
