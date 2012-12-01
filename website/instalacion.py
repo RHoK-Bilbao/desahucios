@@ -2,10 +2,15 @@ import urllib2
 import os
 import getpass
 import traceback
+import os
+
 
 os.system("pip install -r requirements.txt")
 
-rhok_db = urllib2.urlopen("http://dev.morelab.deusto.es/rhok_desahucios.sql").read()
+if os.path.exists("rhok_desahucios.sql"):
+    rhok_db = open("rhok_desahucios.sql").read()
+else:
+    rhok_db = urllib2.urlopen("http://dev.morelab.deusto.es/rhok_desahucios.sql").read()
 
 open("rhok_desahucios.sql",'w').write(rhok_db)
 
