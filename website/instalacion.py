@@ -15,7 +15,7 @@ password = getpass.getpass("Dame password mysql")
 import pymysql as dbi
 print "Creating database..."
 try:
-    connection = dbi.connect(user=user, passwd=passwd, host="127.0.0.1")
+    connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
     cursor = connection.cursor()
     cursor.execute("""CREATE DATABASE IF NOT EXISTS `rhok_desahucios` ;
     CREATE USER 'rhok'@'localhost' IDENTIFIED BY 'rhok';
@@ -29,7 +29,7 @@ except:
 print "done"
 print "Adding content..."
 try:
-    connection = dbi.connect(user=user, passwd=passwd, host="127.0.0.1")
+    connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
     cursor = connection.cursor()
     cursor.execute(rhok_db)
     connection.commit()
