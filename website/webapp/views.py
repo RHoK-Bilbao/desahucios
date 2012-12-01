@@ -2,6 +2,9 @@
 
 import json
 
+import pymysql_sa
+pymysql_sa.make_default_mysql_dialect()
+
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
@@ -14,8 +17,6 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-import pymysql_sa
-pymysql_sa.make_default_mysql_dialect()
 
 ENGINE_STR = 'mysql://%s:%s@%s/rhok_desahucios' % (cfg.DESAHUCIOS_USER, cfg.DESAHUCIOS_PASSWORD, cfg.DESAHUCIOS_HOST)
 ENGINE     = create_engine(ENGINE_STR, convert_unicode=True, pool_recycle=3600)
