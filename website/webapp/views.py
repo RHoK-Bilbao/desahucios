@@ -141,6 +141,31 @@ def show_desahucios(request, province_name, year, month):
     finally:
         session.remove()
 
+def show_desahucios_anyo(request, province_name, year):
+    try:
+        province = session.query(SepeProvince).filter_by(name = province_name).first()
+        if province is None:
+            return HttpResponse("Province not found")
+        towns = session.query(SepeTown).filter_by(province = province).all()
+        data = []
+        for town in towns:
+            municipio = session.query(Municipio).filter_by(nombre = town.name).first()
+            if municipio is not None:
+                desahucios = session.query(Desahucio).filter(Desahucio.municipio == municipio, sqlalchemy.extract('year', Desahucio.fecha) == int(year)).count()
+                registries = session.query(SepeRegistry).filter_by(town = town, year = int(year)).all()
+                total = 0
+                for registry in registries:
+                    total += registry.total
+
+                data.append({
+                        'town'       : town.name,
+                        'desahucios' : desahucios,
+                        'unemployed' : registry.total,
+                    })
+        return HttpResponse(json.dumps(data))
+    finally:
+        session.remove()
+
 def _get_field(gender, age):
     if gender == 'all':
         if age == 'all':
