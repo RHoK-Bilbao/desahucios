@@ -6,9 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import os
 
-#SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
-
-SQLALCHEMY_ENGINE_STR = 'sqlite:///' + str(os.path.join(os.getcwd(), 'desahucios.db'))
+SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
 
 engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle=3600)
 
@@ -67,7 +65,4 @@ class Desahucio(Base):
 		self.nig = nig
 		self.municipio = municipio
 		self.partidojudicial = partidojudicial
-
-#Base.metadata.drop_all(bind = engine)
-#Base.metadata.create_all(bind = engine)
 
