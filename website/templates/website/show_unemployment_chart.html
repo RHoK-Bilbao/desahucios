@@ -29,9 +29,49 @@
 
 <script>
 
+	// -----------------
+	// Prepare the chart
+	// -----------------
+
+	var chart = new Highcharts.Chart({
+	            chart: {
+	                renderTo : 'chart',
+	                type     : 'line',
+					zoomType : 'xy'
+	            },
+	            title : "",
+	            xAxis: {
+	            	type     : 'datetime',
+	                maxzoom  : 60 * 24 * 3600000
+	            },
+	            yAxis: {
+	                title: { text : 'Desempleo' },
+	                labels: { formatter : function() { return this.value / 1000 +'k'; } },
+	                min:0,
+	                minPadding:0
+	            },
+	            tooltip: {
+	                formatter: function() {
+	                	var date = new Date(this.point.x) ;
+
+	                    return this.series.name  +
+	                    	"<br/>Desempleados: " + this.point.y + 
+	                    	"<br/>"+ date.getFullYear() + "-" + (date.getMonth() +1) ;
+	                }
+	            },
+	            credits: { enabled:false },
+	            loading: {
+            		labelStyle: { color: 'white' },
+            		style : {backgroundColor: 'gray' }
+        		}
+	        });
+
+	// -------------------------
+	// Get the list of provinces 
+	// -------------------------
+
 	var provinces ;
 	
-
 	$.ajax({
 			url: "/provinces" ,
 	  		context: document.body
@@ -45,87 +85,63 @@
 	  		$('#provinceSelector').html(provs_str);
 	  	});
 
+	// --------------
+	// Button clicked
+	// --------------
 
 	$("#Get").click( function() {
 		var provID = $('#provinceSelector').val();
 		var provincia = provinces[provID]
+
+		chart.showLoading();
+
+		while(chart.series.length > 0 )
+			chart.series[0].remove(false);
+
+		// ------------
+		// Send request
+		// ------------
 
 		$.ajax({
 			url: "/province/" + provincia + "/all" ,
 	  		context: document.body
 		}).done(
 			function (datastr) {
-	   			var chart;
+	   			
+	   			// -----------------------------
+	   			// Generate data for each series 
+	   			// -----------------------------
+
 	    		var data = JSON.parse(datastr);
-
-	    		var series = [] ;
-
 
 	    		for( var i = 0 ; i < data.length ; ++i )
 	    		{
-	    			var datarray = []; 
+	    			var seriesdata = []; 
 	    			for( var j = 0 ; j < data[i].results.length ; ++j )
-	    				datarray.push(
+	    				seriesdata.push(
 	    					[
 	    						Date.UTC(data[i].results[j].year , data[i].results[j].month,1),
 	    						data[i].results[j].unemployed
-	    						]
-	    					);
-	    				
-	    			series.push( {
+	    					]);
+	    			
+	    			// -----------------------------
+	    			// Add each data series to graph
+	    			// -----------------------------
+
+	    			chart.addSeries( {
 	    				name: data[i].town,
-	    				data: datarray
-	    				//pointInterval: 30 * 24 * 3600 * 1000, // this is approx, but I don't think we can do better...
-	            	    //pointStart: Date.UTC(2005, 5, 01)
-	            	});
+	    				data: seriesdata
+	            	},false);
 	    		}
 
-	        	chart = new Highcharts.Chart({
-		            chart: {
-		                renderTo: 'chart',
-		                type: 'line',
-						zoomType: 'xy'
+	    		// ----------------
+	    		// Show graph again
+	    		// ----------------
 
-		            },
-		            title: {
-		                text: 'Desempleo en ' + provincia
-		            },
-		            xAxis: {
-		            	type:'datetime',
-		                maxzoom: 60 * 24 * 3600000
-		            },
-		            yAxis: {
-		                title: {
-		                    text: 'Desempleo'
-		                },
-		                labels: {
-		                    formatter: function() {
-		                        return this.value / 1000 +'k';
-		                    }
-		                },
-		                min:0,
-		                minPadding:0
-		            },
-		            tooltip: {
-		                formatter: function() {
-		                	var date = new Date(this.point.x) ;
-
-		                    return this.series.name  +
-		                    	"<br/>Desempleados: " + this.point.y + 
-		                    	"<br/>"+ date.getFullYear() + "-" + (date.getMonth() +1) ;
-		                }
-		            },
-		            plotOptions: {
-		            	line:{
-		            		animation:true,
-		            		allowPointSelect : true
-		            	}
-		            },
-		            series: series
-		        });
-		    });
+	    		chart.hideLoading();
+	        	chart.redraw();
+		});
 	});
-
 
 </script>
 
