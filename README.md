@@ -12,7 +12,7 @@ All scripts are located in *desahucios/parsers/justizianet* folder.
 4. Launch *subastas_scrapper.py* to download information from web
 
 
-Warning: Execute *drop_all.py* to remove schema and ALL data contained in rhok_desahucios table. 
+**Warning:** Execute *drop_all.py* to remove database schema and **ALL** data contained in rhok_desahucios table. 
 
 # Dependencies
 
