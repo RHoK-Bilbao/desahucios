@@ -79,13 +79,30 @@ def list_provinces(request):
         session.remove()
 
 def list_towns(request, province_name):
-    print "En list_towns"
     try:
         province = session.query(SepeProvince).filter_by(name = province_name).first()
         if province is None:
             return HttpResponse("Province not found")
         towns = session.query(SepeTown).filter_by(province = province).all()
         return HttpResponse(json.dumps([ town.name for town in towns ]))
+    finally:
+        session.remove()
+
+def show_province_year_month(request, province_name, year, month):
+    try:
+        if province_name == 'all':
+            pass
+        province = session.query(SepeProvince).filter_by(name = province_name).first()
+        if province is None:
+            return HttpResponse("Province not found")
+        towns = session.query(SepeTown).filter_by(province = province).all()
+        data = {}
+        for town in towns:
+            registry = session.query(SepeRegistry).filter_by(town = town, year = int(year), month = int(month)).first()
+            if registry is not None:
+                data[town.name] = registry.total
+        
+        return HttpResponse(json.dumps(data))
     finally:
         session.remove()
 
