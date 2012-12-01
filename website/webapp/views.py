@@ -12,6 +12,8 @@ from webapp.models_sepe import SepeProvince, SepeTown, SepeRegistry
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+import pymysql_sa
+pymysql_sa.make_default_mysql_dialect()
 
 ENGINE_STR = 'mysql://%s:%s@%s/rhok_desahucios' % (cfg.DESAHUCIOS_USER, cfg.DESAHUCIOS_PASSWORD, cfg.DESAHUCIOS_HOST)
 ENGINE     = create_engine(ENGINE_STR, convert_unicode=True, pool_recycle=3600)

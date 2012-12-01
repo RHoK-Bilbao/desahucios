@@ -1,0 +1,4 @@
+pymysql
+sqlalchemy
+pymysql_sa
+django
