@@ -14,7 +14,6 @@ urlpatterns = patterns('',
     url(r'^provinces/(\w+)/?$',      'webapp.views.list_towns',      name='list_towns'),
     url(r'^desahucios/(\w+)/(\d+)/(\d+)/$', 'webapp.views.show_desahucios', name = 'show_desahucios'),
     url(r'^desahucios/(\w+)/(\d+)/$', 'webapp.views.show_desahucios_anyo', name = 'show_desahucios_anyo'),
-    url(r'^other_chart/$',           'webapp.views.other_chart',     name='other_chart'),
    
 
     url(r'^unemployment_graph/$', 'webapp.views.show_unemployment_graph', name = 'show_unemployment_graph'),

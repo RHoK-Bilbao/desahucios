@@ -24,9 +24,6 @@ session    = scoped_session(sessionmaker(bind = ENGINE))
 def index(request):
 	return render_to_response('website/index.html', {}, context_instance = RequestContext(request))
 
-def other_chart(request):
-	return render_to_response('website/other_chart.html', {}, context_instance = RequestContext(request))
-
 def province_json(request, province_name): 
     try:
         province = session.query(SepeProvince).filter_by(name = province_name).first()
