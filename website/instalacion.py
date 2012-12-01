@@ -33,14 +33,4 @@ except:
 
 print "done"
 print "Adding content..."
-lines = rhok_db.splitlines()
-for line in lines:
-    try:
-        connection = dbi.connect(user=user, passwd=password, host="127.0.0.1")
-        cursor = connection.cursor()
-        cursor.execute(line)
-        connection.commit()
-        cursor.close()
-        connection.close()
-    except:
-        traceback.print_exc()
+os.system("mysql -urhok -p < rhok_desahucios.sql")
