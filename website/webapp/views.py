@@ -61,21 +61,31 @@ def town_json(request, province_name, town_name):
 
                 town_results = []
 
+                max_unemployed = 0 
+
                 for registry in registries:
                     field = _get_field(gender, age)
                     if not isinstance(field, basestring):
                         return field
 
                     particular_data = getattr(registry, field)
+                    if particular_data > max_unemployed :
+                        max_unemployed = particular_data
+
                     town_results.append({
                         'year'       : registry.year,
                         'month'      : registry.month,
                         'unemployed' : particular_data
                     })
+                
                 data.append({
                     'town'    : town.name,
-                    'results' : town_results
+                    'results' : town_results,
+                    'max_unemployed' : max_unemployed
                 })
+
+            data.sort( key = lambda x: -x['max_unemployed'] )
+
             return HttpResponse(json.dumps(data))
                             
         town = session.query(SepeTown).filter_by(name = town_name, province = province).first()
