@@ -7,7 +7,11 @@
 
     <h2>Gr&aacute;fico de desahucios vs desempleo</h2>
 	 Provincia:
- 	<input type="textbox" value="Bizkaia" id="textbox"></input>
+ 	<select id="provinces">
+ 		<option value=0>Araba</option>
+ 		<option value=1>Bizkaia</option>
+ 		<option value=2>Gipuzkoa</option>
+ 	</select>
     <input type="submit" value="Generar gr&aacute;fico" id="Get" />
 
 
@@ -24,7 +28,7 @@
 <script>
 
 	$("#Get").click( function() {
-		var provincia = $('#textbox').val();
+		var provincia = ['Araba','Bizkaia','Gipuzkoa'][$('#provinces').val()] ;
 
 		$.ajax({
 			url: "/desahucios/" + provincia + "/2012" ,
