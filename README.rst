@@ -5,7 +5,7 @@ The goal of this project is to be able to correlate the evictions that arising
 in Spain with the unemployment, being able to calculate it per region and year.
 This idea was defined by `VoxCivica <http://voxcivica.org/>`_ and it is detailed
 in `this document
-<http://blogs.deusto.es/rhok-bilbao/wp-content/uploads/2012/11/retocivicorhok.pdf>`.
+<http://blogs.deusto.es/rhok-bilbao/wp-content/uploads/2012/11/retocivicorhok.pdf>`_.
 VoxCivica is a citizen initiative that pursues activating the civil society and
 providing tools and knowledge so it can exercise its leading, responsible,
 critical and aware role.
@@ -14,7 +14,7 @@ The web application is not still running anywhere due to the early state of the
 project, but you can download it and run it.
 
 The initial code base was developed during the `RHoK Bilbao
-<http://blogs.deusto.es/rhok-bilbao/`_ in December 2012. RHoK stands for `Random
+<http://blogs.deusto.es/rhok-bilbao/>`_ in December 2012. RHoK stands for `Random
 Hacks of Kindness <http://www.rhok.org>`_, which is a global initiative that
 attempts to make the world a better place by developing practical, open source
 technology solutions to respond to some of the most complex challenges facing
@@ -39,10 +39,9 @@ using MySQL as the database backend (which should be easily replaced):
 
 * The web application, where the results are shown
 * Two crawlers:
-  * The SEPE crawler, which retrieves unemployment information about all Spain
-    from SEPE.
-  * The Jusitizia.net crawler, which retrieves evictions information from the
-    Basque Country Justice Department.
+
+  * The SEPE crawler, which retrieves unemployment information about all Spain from SEPE.
+  * The Jusitizia.net crawler, which retrieves evictions information from the Basque Country Justice Department.
 
 We're pursuing a `fourth component
 <https://github.com/RHoK-Bilbao/desahucios/issues/1>`_ to get information about
@@ -106,7 +105,7 @@ contained in rhok_desahucios table.
 Bugs
 ====
 
-Please fill them at the `issues page <http://github.com/RHoK-Bilbao/desahucios/issues/>_`.
+Please fill them at the `issues page <http://github.com/RHoK-Bilbao/desahucios/issues/>`_.
 
 License
 =======
