@@ -58,7 +58,7 @@ official documentation on how to run it.
 
   pip install -r requirements.txt
 
-* Run it (``python manage.py start``).
+* Run it (``python manage.py runserver``).
 
 You'll find the client code in the ``templates/website/`` directory, and the
 different methods in the ``webapp/views.py`` script.
