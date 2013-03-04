@@ -1,14 +1,9 @@
 from sqlalchemy import Column, Integer, Unicode, Float, DateTime, ForeignKey, UniqueConstraint, Boolean
 from sqlalchemy.orm import relation, backref
-from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 import os
-
-SQLALCHEMY_ENGINE_STR = 'mysql://rhok:rhok@127.0.0.1/rhok_desahucios'
-
-engine = create_engine(SQLALCHEMY_ENGINE_STR, convert_unicode=True, pool_recycle=3600)
 
 Base = declarative_base()
 
