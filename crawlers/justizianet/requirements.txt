@@ -1,0 +1,3 @@
+sqlalchemy
+simplejson
+BeautifulSoup

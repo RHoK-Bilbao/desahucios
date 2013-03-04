@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 from sqlalchemy import Column, Integer, Unicode, Float, DateTime, ForeignKey, UniqueConstraint, Boolean
 from sqlalchemy.orm import relation, backref
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -60,4 +62,4 @@ class Desahucio(Base):
 		self.nig = nig
 		self.municipio = municipio
 		self.partidojudicial = partidojudicial
-
+		
