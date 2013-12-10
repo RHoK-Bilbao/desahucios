@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 from sqlalchemy import Column, Integer, Unicode, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relation, backref
 from sqlalchemy import create_engine
