@@ -65,6 +65,10 @@ class DbLoader(object):
 
 if __name__ == '__main__':
     DIRECTORY = 'stored_data'
+
+    if not os.path.exists(DIRECTORY):
+            os.makedirs(DIRECTORY)
+
     loader = DbLoader(DIRECTORY, 'rhok','rhok','127.0.0.1')
     loader.build_db()
     loader.run()
