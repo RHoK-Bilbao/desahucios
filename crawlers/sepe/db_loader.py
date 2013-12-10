@@ -70,7 +70,7 @@ class DbLoader(object):
         session.commit()
         session.close()
 
-    def update(self, start_year=2005, end_year=today.year, start_month=1, end_month=12):
+    def update(self, start_year=2005, end_year=today.year, start_month=1, end_month=today.month):
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
 

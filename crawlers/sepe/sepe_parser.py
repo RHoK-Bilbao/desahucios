@@ -149,7 +149,7 @@ MONTHS = [
 class DownloadException(Exception):
     pass
 
-def iterate_available_data(start_year=2005, end_year=today.year, start_month=1, end_month=12):
+def iterate_available_data(start_year=2005, end_year=today.year, start_month=1, end_month=today.month):
     """ returns (year, month, province) for each available data """
 
     for year in range(start_year, end_year + 1):
@@ -209,7 +209,7 @@ class Downloader(object):
 
         open(full_path, 'w').write(excel_content)
 
-    def download_all(self, start_year=2005, end_year=today.year, start_month=1, end_month=12):
+    def download_all(self, start_year=2005, end_year=today.year, start_month=1, end_month=today.month):
         for year, month, province in iterate_available_data(start_year, end_year, start_month, end_month):
             try:
                 print "Downloading province %s for month %s and year %s" % (province, month, year)
