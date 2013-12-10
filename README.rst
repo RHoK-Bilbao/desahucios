@@ -78,8 +78,7 @@ The code base is located in the ``desahucios/parsers/sepe`` directory.
 
   mysql -uroot -p < creation.sql
 
-* Populate the initial database by running the ``db_loader.py`` script.
-* Run the ``sepe_parser.py`` script to retrieve all the information.
+* Run ``db_loader.py`` script to retrieve all information and update the database.
 
 *Note:* you can download the latest version of the database from `TOBEDEFINED
 <tobedefined>`_.
