@@ -14,6 +14,8 @@ import xlrd1
 
 warnings.filterwarnings(action='ignore', module='xlrd1')
 
+today = datetime.datetime.today()
+
 def clean_data(data):
     if isinstance(data, basestring) and 'blico' in data:
         return 0
@@ -147,12 +149,11 @@ MONTHS = [
 class DownloadException(Exception):
     pass
 
-def iterate_available_data(start_year, end_year):
+def iterate_available_data(start_year=2005, end_year=today.year, start_month=1, end_month=12):
     """ returns (year, month, province) for each available data """
-    today = datetime.datetime.today()
 
     for year in range(start_year, end_year + 1):
-        for month in range(1, 13):
+        for month in range(start_month, end_month + 1):
             if year == 2005 and month < 5:
                 continue
 
@@ -208,8 +209,8 @@ class Downloader(object):
 
         open(full_path, 'w').write(excel_content)
 
-    def download_all(self):
-        for year, month, province in iterate_available_data():
+    def download_all(self, start_year=2005, end_year=today.year, start_month=1, end_month=12):
+        for year, month, province in iterate_available_data(start_year, end_year, start_month, end_month):
             try:
                 print "Downloading province %s for month %s and year %s" % (province, month, year)
                 self.download(year, month, province)

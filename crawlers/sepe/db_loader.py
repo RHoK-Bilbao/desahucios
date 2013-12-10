@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import datetime
 
 from sqlalchemy import Column, Integer, Unicode, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relation, backref
@@ -10,6 +11,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from models import SepeProvince, SepeTown, Base
 import sepe_parser
+
+today = datetime.datetime.today()
 
 class DbLoader(object):
 
@@ -22,7 +25,7 @@ class DbLoader(object):
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
 
-    def run(self):
+    def load_data(self, start_year=2005, end_year=today.year, start_month=1, end_month=12):
         engine = create_engine(self.engine_str, convert_unicode=True, pool_recycle=3600)
         
         Session = sessionmaker(bind = engine)
@@ -40,7 +43,7 @@ class DbLoader(object):
             
             provinces[province] = province_instance
 
-        for year, month, province in sepe_parser.iterate_available_data(2005, today.year):
+        for year, month, province in sepe_parser.iterate_available_data(start_year, end_year, start_month, end_month):
             try:
                 parser = sepe_parser.UnemploymentExcelParser(self.directory, year, month, province)
             except Exception as e:
@@ -71,9 +74,10 @@ if __name__ == '__main__':
             os.makedirs(DIRECTORY)
 
     downloader = sepe_parser.Downloader(DIRECTORY)
-    downloader.download_all()
+    #downloader.download_all()
+    downloader.download_all(2012, 2012, 1, 1)
 
     loader = DbLoader(DIRECTORY, 'rhok','rhok','127.0.0.1')
     loader.build_db()
-    loader.run()
+    loader.load_data(2012, 2012, 1, 1)
 
