@@ -52,6 +52,7 @@ class SepeTown(Base):
             'month'    : month,
             'year'     : year,
         }
+        
         for field in fields:
             arguments[field] = getattr(registry, field)
 
