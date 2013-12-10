@@ -44,6 +44,7 @@ class DbLoader(object):
             provinces[province] = province_instance
 
         for year, month, province in sepe_parser.iterate_available_data(start_year, end_year, start_month, end_month):
+            print 'Processing %s - %s/%s' % (province, month, year)
             try:
                 parser = sepe_parser.UnemploymentExcelParser(self.directory, year, month, province)
             except Exception as e:
@@ -56,6 +57,7 @@ class DbLoader(object):
             
             for town in parser.towns:
                 town_instance = session.query(SepeTown).filter_by(province = provinces[province], name = town).first()
+
                 if town_instance is None:
                     town_instance = SepeTown(town, provinces[province])
                     session.add(town_instance)
@@ -66,18 +68,19 @@ class DbLoader(object):
         session.commit()
         session.close()
 
+    def update(self, start_year=2005, end_year=today.year, start_month=1, end_month=12):
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+
+        downloader = sepe_parser.Downloader(self.directory)
+        downloader.download_all(start_year, end_year, start_month, end_month)
+
+        loader.build_db()
+        loader.load_data(start_year, end_year, start_month, end_month)        
 
 if __name__ == '__main__':
     DIRECTORY = 'stored_data'
 
-    if not os.path.exists(DIRECTORY):
-            os.makedirs(DIRECTORY)
-
-    downloader = sepe_parser.Downloader(DIRECTORY)
-    #downloader.download_all()
-    downloader.download_all(2012, 2012, 1, 1)
-
     loader = DbLoader(DIRECTORY, 'rhok','rhok','127.0.0.1')
-    loader.build_db()
-    loader.load_data(2012, 2012, 1, 1)
+    loader.update(2012, 2012, 1, 1)
 
