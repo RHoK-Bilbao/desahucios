@@ -57,7 +57,7 @@ class UnemploymentExcelParser(object):
         if not os.path.exists(fname):
             raise Exception("File %s does not exist" % fname)
 
-        print fname
+        # print fname
 
         workbook = xlrd1.open_workbook(fname)
         if 'PARO' in workbook.sheet_names():
