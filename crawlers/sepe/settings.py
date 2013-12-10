@@ -2,11 +2,11 @@
 #SEPE crawler configuration
 DIRECTORY = 'stored_data'
 
-START_YEAR = 2012
-END_YEAR = 2012
+START_YEAR = 2005 # Minimum year 2005
+END_YEAR = 2013
 
 START_MONTH = 1
-END_MONTH = 1
+END_MONTH = 12
 
 DB_USER = 'rhok'
 DB_PASS = 'rhok'
