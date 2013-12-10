@@ -12,13 +12,15 @@ from sqlalchemy.ext.declarative import declarative_base
 from models import SepeProvince, SepeTown, Base
 import sepe_parser
 
+import settings
+
 today = datetime.datetime.today()
 
 class DbLoader(object):
 
-    def __init__(self, directory, username, password, host):
-        self.directory = directory
-        self.engine_str = 'mysql://%s:%s@%s/rhok_desahucios' % (username, password, host)
+    def __init__(self):
+        self.directory = settings.DIRECTORY
+        self.engine_str = settings.DB_STRING
 
     def build_db(self):
         engine = create_engine(self.engine_str, convert_unicode=True, pool_recycle=3600)
@@ -79,8 +81,6 @@ class DbLoader(object):
         loader.load_data(start_year, end_year, start_month, end_month)        
 
 if __name__ == '__main__':
-    DIRECTORY = 'stored_data'
-
-    loader = DbLoader(DIRECTORY, 'rhok','rhok','127.0.0.1')
-    loader.update(2012, 2012, 1, 1)
+    loader = DbLoader()
+    loader.update(settings.START_YEAR, settings.END_YEAR, settings.START_MONTH, settings.END_MONTH)
 
