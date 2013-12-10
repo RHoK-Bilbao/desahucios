@@ -147,11 +147,11 @@ MONTHS = [
 class DownloadException(Exception):
     pass
 
-def iterate_available_data():
+def iterate_available_data(start_year, end_year):
     """ returns (year, month, province) for each available data """
     today = datetime.datetime.today()
 
-    for year in range(2005, today.year + 1):
+    for year in range(start_year, end_year + 1):
         for month in range(1, 13):
             if year == 2005 and month < 5:
                 continue
@@ -163,6 +163,7 @@ def iterate_available_data():
                 yield year, month, province
 
 class Downloader(object):
+
     def __init__(self, directory):
         if not os.path.exists(directory):
             raise Exception("Directory %s does not exist" % directory)

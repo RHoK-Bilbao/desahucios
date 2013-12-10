@@ -40,7 +40,7 @@ class DbLoader(object):
             
             provinces[province] = province_instance
 
-        for year, month, province in sepe_parser.iterate_available_data():
+        for year, month, province in sepe_parser.iterate_available_data(2005, today.year):
             try:
                 parser = sepe_parser.UnemploymentExcelParser(self.directory, year, month, province)
             except Exception as e:
