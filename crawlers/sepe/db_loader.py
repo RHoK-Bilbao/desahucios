@@ -30,7 +30,6 @@ class DbLoader(object):
         provinces = {}
         
         for province in sepe_parser.PROVINCES:
-
             province_instance = session.query(SepeProvince).filter_by(name = province).first() 
 
             if province_instance is None:
