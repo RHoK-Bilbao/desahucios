@@ -210,6 +210,7 @@ class Downloader(object):
     def download_all(self):
         for year, month, province in iterate_available_data():
             try:
+                print "Downloading province %s for month %s and year %s" % (province, month, year)
                 self.download(year, month, province)
             except DownloadException:
                 print "Skipping province %s for month %s and year %s" % (province, month, year)
