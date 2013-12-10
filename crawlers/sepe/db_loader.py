@@ -70,7 +70,7 @@ if __name__ == '__main__':
     if not os.path.exists(DIRECTORY):
             os.makedirs(DIRECTORY)
 
-    downloader = Downloader(DIRECTORY)
+    downloader = sepe_parser.Downloader(DIRECTORY)
     downloader.download_all()
 
     loader = DbLoader(DIRECTORY, 'rhok','rhok','127.0.0.1')
