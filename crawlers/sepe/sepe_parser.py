@@ -214,33 +214,33 @@ class Downloader(object):
             except DownloadException:
                 print "Skipping province %s for month %s and year %s" % (province, month, year)
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     
-    DIRECTORY = 'stored_data'
+#     DIRECTORY = 'stored_data'
 
-    # downloader = Downloader(DIRECTORY)
-    # downloader.download_all()
+#     # downloader = Downloader(DIRECTORY)
+#     # downloader.download_all()
 
-    for year, month, province in iterate_available_data():
-        continue
-        try:
-            parser = UnemploymentExcelParser(DIRECTORY, year, month, province)
-            parser.retrieve_data()
-            print year, month, province, parser.total.total
-        except Exception as e:
-            print "Error: %s" % e
+#     for year, month, province in iterate_available_data():
+#         continue
+#         try:
+#             parser = UnemploymentExcelParser(DIRECTORY, year, month, province)
+#             parser.retrieve_data()
+#             print year, month, province, parser.total.total
+#         except Exception as e:
+#             print "Error: %s" % e
 
-    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'BIZKAIA')
-    print ';'.join(sorted(parser.towns.keys()))
+#     parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'BIZKAIA')
+#     print ';'.join(sorted(parser.towns.keys()))
 
-    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'ARABA')
-    print ';'.join(sorted(parser.towns.keys()))
+#     parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'ARABA')
+#     print ';'.join(sorted(parser.towns.keys()))
 
-    parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'GIPUZKOA')
-    print ';'.join(sorted(parser.towns.keys()))
+#     parser = UnemploymentExcelParser(DIRECTORY, 2012, 8, 'GIPUZKOA')
+#     print ';'.join(sorted(parser.towns.keys()))
 
 
-    # parser = UnemploymentExcelParser(DIRECTORY, 2012, 10, 'CACERES')
-    # print parser.total.total
-    # print sorted(parser.towns.keys())
+#     # parser = UnemploymentExcelParser(DIRECTORY, 2012, 10, 'CACERES')
+#     # print parser.total.total
+#     # print sorted(parser.towns.keys())
 
