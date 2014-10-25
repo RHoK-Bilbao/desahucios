@@ -63,6 +63,16 @@ official documentation on how to run it.
 You'll find the client code in the ``templates/website/`` directory, and the
 different methods in the ``webapp/views.py`` script.
 
+If you want to get an old dump of the database without generating it, just download it from:
+
+   $ mysql -uroot -p < crawlers/sepe/creation.sql
+   $ wget http://www.morelab.deusto.es/pub/desahucios.sql.bz2
+   $ wget http://www.morelab.deusto.es/pub/rhok_desahucios.sql.bz2
+   $ bzip -d desahucios.sql.bz2
+   $ bzip -d rhok_desahucios.sql.bz2
+   $ mysql -uroot -p rhok_desahucios < desahucios.sql
+   $ mysql -uroot -p rhok_desahucios < rhok_desahucios.sql
+
 
 SEPE crawler
 ~~~~~~~~~~~~
