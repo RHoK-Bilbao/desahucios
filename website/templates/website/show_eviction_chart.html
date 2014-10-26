@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <a href="/">Volver</a>
+    <a href="{% url index %}">Volver</a>
 
     <h2>Gr&aacute;fico de desahucios vs desempleo</h2>
 	 Provincia:
@@ -31,7 +31,7 @@
 		var provincia = ['Araba','Bizkaia','Gipuzkoa'][$('#provinces').val()] ;
 
 		$.ajax({
-			url: "/desahucios/" + provincia + "/2012" ,
+			url: "{% url show_desahucios_anyo 'provincia' '2012' %}".replace("provincia", provincia),
 	  		context: document.body,
 		}).done(
 			function (datastr) {

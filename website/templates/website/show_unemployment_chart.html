@@ -4,7 +4,7 @@
 {% block content %}
 
     <div class="center">
-    	<a class="btn btn-large btn-primary" href="/">Volver</a>
+    	<a class="btn btn-large btn-primary" href="{% url index %}">Volver</a>
     </div>
 
     Provincia:
@@ -73,7 +73,7 @@
 	var provinces ;
 	
 	$.ajax({
-			url: "/provinces" ,
+			url: "{% url list_provinces %}" ,
 	  		context: document.body
 	  	}).done( function(datastr)
 	  	{
@@ -103,7 +103,7 @@
 		// ------------
 
 		$.ajax({
-			url: "/province/" + provincia + "/all" ,
+			url: "{% url town_json 'provincia' 'all' %}".replace("provincia", provincia),
 	  		context: document.body
 		}).done(
 			function (datastr) {
