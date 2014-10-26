@@ -20,6 +20,11 @@ attempts to make the world a better place by developing practical, open source
 technology solutions to respond to some of the most complex challenges facing
 humanity.
 
+Demo
+====
+
+See the app running at http://apps.morelab.deusto.es/voxcivica/
+
 Contributions
 =============
 
