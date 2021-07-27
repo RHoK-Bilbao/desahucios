@@ -1,4 +1,4 @@
 pymysql
-sqlalchemy==0.8
+sqlalchemy==1.3.0
 pymysql_sa
 django==1.4
